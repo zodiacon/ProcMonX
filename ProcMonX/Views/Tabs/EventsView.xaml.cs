@@ -13,12 +13,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ProcMonX {
+namespace ProcMonX.Views.Tabs
+{
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for EventsView.xaml
     /// </summary>
-    public partial class MainWindow {
-        public MainWindow() {
+    public partial class EventsView : UserControl
+    {
+        public EventsView()
+        {
             InitializeComponent();
         }
     }

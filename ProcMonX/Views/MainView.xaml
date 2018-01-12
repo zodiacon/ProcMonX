@@ -1,0 +1,114 @@
+﻿<UserControl x:Class="ProcMonX.Views.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ProcMonX.Views"
+             xmlns:sf="http://schemas.syncfusion.com/wpf"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ext="clr-namespace:ProcMonX.Extensions"
+             xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:z="http://zodiacon.wpf/2016"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Menu z:InputHelper.AttachInputBindings="True">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open..." Command="{Binding OpenCommand}" />
+                <MenuItem Header="_Save..." Command="{Binding SaveCommand}" />
+                <Separator />
+                <MenuItem Header="E_xit" Command="{Binding ExitCommand}" />
+            </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Header="_Copy" Command="Copy" Icon="{z:Image /icons/normal/copy.ico, Width=20, Height=20}" />
+            </MenuItem>
+            <MenuItem Header="_View">
+                <MenuItem Header="All _Events" Icon="{z:Image /icons/normal/event.ico, Width=20, Height=20}" Command="{Binding ViewTabCommand}" CommandParameter="AllEvents" />
+                <MenuItem Header="_Processes" Icon="{z:Image /icons/normal/processes.ico, Width=20, Height=20}" Command="{Binding ViewTabCommand}" CommandParameter="Processes" />
+                <MenuItem Header="_Threads" Icon="{z:Image /icons/normal/threads.ico, Width=20, Height=20}" Command="{Binding ViewTabCommand}" CommandParameter="Threads" />
+                <MenuItem Header="_Registry" Icon="{z:Image /icons/normal/registry.ico, Width=20, Height=20}" Command="{Binding ViewTabCommand}" CommandParameter="Registry" />
+                <MenuItem Header="_Modules" Icon="{z:Image /icons/normal/module.ico, Width=20, Height=20}" Command="{Binding ViewTabCommand}" CommandParameter="Modules" />
+                <MenuItem Header="_Files" Icon="{z:Image /icons/category/files.ico, Width=20, Height=20}" Command="{Binding ViewTabCommand}" CommandParameter="Files" />
+                <MenuItem Header="Memo_ry" Icon="{z:Image /icons/category/memory.ico, Width=20, Height=20}" Command="{Binding ViewTabCommand}" CommandParameter="Memory" />
+                <MenuItem Header="_Network" Icon="{z:Image /icons/category/network.ico, Width=20, Height=20}" Command="{Binding ViewTabCommand}" CommandParameter="Network" />
+                <MenuItem Header="_ALPC" Icon="{z:Image /icons/category/alpc.ico, Width=20, Height=20}" Command="{Binding ViewTabCommand}" CommandParameter="Alpc" />
+                <Separator />
+                <MenuItem Header="Clear All" Icon="{z:Image /icons/normal/clear.ico, Width=20, Height=20}" Command="{Binding ClearAllCommand}" />
+                <Separator />
+                <MenuItem Header="_Filter..." />
+            </MenuItem>
+            <MenuItem Header="_Monitor">
+                <MenuItem Header="_Go" Icon="{z:Image /icons/normal/play.ico, Width=20, Height=20}" Command="{Binding GoCommand}" />
+                <MenuItem Header="_Stop" Icon="{z:Image /icons/normal/stop.ico, Width=20, Height=20}" Command="{Binding StopCommand}" />
+                <Separator />
+                <MenuItem Header="Specific Processes..." Icon="{z:Image /icons/normal/processes.ico, Width=20, Height=20}" />
+            </MenuItem>
+            <MenuItem Header="_Options">
+                <MenuItem Header="_Always On Top" IsCheckable="True" IsChecked="{Binding Options.AlwaysOnTop, Mode=TwoWay}" 
+                          Command="{Binding AlwaysOnTopCommand}" CommandParameter="{Binding ElementName=This}" />
+                <MenuItem Header="_Fonts..." />
+                <MenuItem Header="_Colors..." />
+            </MenuItem>
+        </Menu>
+
+        <ToolBar Grid.Row="1" >
+            <ToolBar.Resources>
+                <Style x:Key="{x:Static ToolBar.ButtonStyleKey}" TargetType="Button">
+                    <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
+                    <Setter Property="ContentTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <Image x:Name="image" Source="{Binding Path=(ext:IconProperties.Icon), RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Width="24" Height="24" />
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                    </Style.Triggers>
+                </Style>
+            </ToolBar.Resources>
+            <Button Command="{Binding GoCommand}" ToolTip="Start Monitoring"  ext:IconProperties.Icon="/icons/normal/play.ico" />
+            <Button Command="{Binding StopCommand}" ToolTip="Stop Monitoring" ext:IconProperties.Icon="/icons/normal/stop.ico" />
+            <Separator />
+            <Button ext:IconProperties.Icon="/icons/normal/Event.ico" ToolTip="All Events" Command="{Binding ViewTabCommand}" CommandParameter="AllEvents" />
+            <Button ext:IconProperties.Icon="/icons/normal/Processes.ico" ToolTip="Processes" Command="{Binding ViewTabCommand}" CommandParameter="Processes" />
+            <Button ext:IconProperties.Icon="/icons/normal/Module.ico" ToolTip="Modules" Command="{Binding ViewTabCommand}" CommandParameter="Modules" />
+            <Button ext:IconProperties.Icon="/icons/normal/Threads.ico" ToolTip="Threads" Command="{Binding ViewTabCommand}" CommandParameter="Threads" />
+            <Button ext:IconProperties.Icon="/icons/normal/Registry.ico" ToolTip="Registry" Command="{Binding ViewTabCommand}" CommandParameter="Registry" />
+            <Button ext:IconProperties.Icon="/icons/normal/Files.ico" ToolTip="Files" Command="{Binding ViewTabCommand}" CommandParameter="Files" />
+            <Button ext:IconProperties.Icon="/icons/normal/Memory.ico" ToolTip="Memory" Command="{Binding ViewTabCommand}" CommandParameter="Memory" />
+            <Button ext:IconProperties.Icon="/icons/normal/Network.ico" ToolTip="Network" Command="{Binding ViewTabCommand}" CommandParameter="Network" />
+            <Button ext:IconProperties.Icon="/icons/normal/Alpc.ico" ToolTip="ALPC" Command="{Binding ViewTabCommand}" CommandParameter="Alpc" />
+        </ToolBar>
+
+        <sf:TabControlExt Grid.Row="2" ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab, Mode=TwoWay}" CloseButtonType="Individual" Grid.Column="1" 
+                          HideHeaderOnSingleChild="False" EnableLabelEdit="False" HotTrackingEnabled="True" TabItemLayout="MultiLine" IsDisableUnloadTabItemExtContent="True"
+                          sf:SkinStorage.VisualStyle="Metro" sf:SkinStorage.MetroBrush="{DynamicResource AccentColorBrush}">
+            <i:Interaction.Behaviors>
+                <z:EventToCommand EventName="TabClosed" Command="{Binding TabClosedCommand}" />
+                <z:EventToCommand EventName="TabClosing" Command="{Binding TabClosingCommand}" />
+            </i:Interaction.Behaviors>
+            <sf:TabControlExt.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{Binding Icon}" Width="16" Height="16" />
+                        <TextBlock Text="{Binding Text}" Margin="4,0,0,0" VerticalAlignment="Center" />
+                    </StackPanel>
+                </DataTemplate>
+            </sf:TabControlExt.ItemTemplate>
+        </sf:TabControlExt>
+
+        <StatusBar Grid.Row="3">
+            <Image Source="/icons/normal/play.ico" metro:VisibilityHelper.IsVisible="{Binding IsMonitoring}" Width="16" Height="16" />
+            <Image Source="/icons/normal/stop.ico" metro:VisibilityHelper.IsCollapsed="{Binding IsMonitoring}" Width="16" Height="16" />
+            <Separator />
+            <TextBlock Text="{Binding EventCount, StringFormat=Events: \{0\}}" />
+        </StatusBar>
+    </Grid>
+</UserControl>
