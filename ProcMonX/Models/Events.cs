@@ -15,9 +15,10 @@ namespace ProcMonX.Models {
         RegistryCloseKey, RegistryEnumerateKey, RegistryEnumerateValues, RegistryFlush,
         RegistryDeleteKey, RegistryDeleteValue, RegistryQueryMultipleValues,
         AlpcSendMessage = 500, AlpcReceiveMessage,
-        ModuleLoad = 600, ModuleUnload,
+        ModuleLoad = 600, ModuleUnload, ModuleDCLoad, ModuleDCUnload,
         FileRead = 700, FileWrite, FileCreate, FileRename, FileDelete, FileQueryInfo,
         DiskRead = 800, DiskWrite,
+        TcpIpReceive = 900, TcpIpSend, TcpIpConnect, TcpIpDisconnect, TcpIpAccept
     }
 
     public enum EventCategory {
@@ -31,6 +32,7 @@ namespace ProcMonX.Models {
         Network,
         Driver,
         Memory,
+        Disk
     }
 
     class EventInfo {
@@ -151,6 +153,18 @@ namespace ProcMonX.Models {
                     Category = EventCategory.Modules
                 },
                 new EventInfo {
+                    EventType = EventType.ModuleDCLoad,
+                    AsString = "Module DC Load",
+                    Keyword = KernelTraceEventParser.Keywords.ImageLoad,
+                    Category = EventCategory.Modules
+                },
+                new EventInfo {
+                    EventType = EventType.ModuleDCUnload,
+                    AsString = "Module DC Unload",
+                    Keyword = KernelTraceEventParser.Keywords.ImageLoad,
+                    Category = EventCategory.Modules
+                },
+                new EventInfo {
                     EventType = EventType.AlpcSendMessage,
                     AsString = "ALPC Send Message",
                     Keyword = KernelTraceEventParser.Keywords.AdvancedLocalProcedureCalls,
@@ -203,6 +217,48 @@ namespace ProcMonX.Models {
                     AsString = "Memory Free",
                     Keyword = KernelTraceEventParser.Keywords.VirtualAlloc,
                     Category = EventCategory.Memory
+                },
+                new EventInfo {
+                    EventType = EventType.DiskWrite,
+                    AsString = "Disk Write",
+                    Keyword = KernelTraceEventParser.Keywords.DiskIO | KernelTraceEventParser.Keywords.DiskIOInit,
+                    Category = EventCategory.Disk
+                },
+                new EventInfo {
+                    EventType = EventType.DiskRead,
+                    AsString = "Disk Read",
+                    Keyword = KernelTraceEventParser.Keywords.DiskIO | KernelTraceEventParser.Keywords.DiskIOInit,
+                    Category = EventCategory.Disk
+                },
+                new EventInfo {
+                    EventType = EventType.TcpIpConnect,
+                    AsString = "TCP/IP Connect",
+                    Keyword = KernelTraceEventParser.Keywords.NetworkTCPIP,
+                    Category = EventCategory.Network
+                },
+                new EventInfo {
+                    EventType = EventType.TcpIpDisconnect,
+                    AsString = "TCP/IP Disconnect",
+                    Keyword = KernelTraceEventParser.Keywords.NetworkTCPIP,
+                    Category = EventCategory.Network
+                },
+                new EventInfo {
+                    EventType = EventType.TcpIpAccept,
+                    AsString = "TCP/IP Accept",
+                    Keyword = KernelTraceEventParser.Keywords.NetworkTCPIP,
+                    Category = EventCategory.Network
+                },
+                new EventInfo {
+                    EventType = EventType.TcpIpSend,
+                    AsString = "TCP/IP Send",
+                    Keyword = KernelTraceEventParser.Keywords.NetworkTCPIP,
+                    Category = EventCategory.Network
+                },
+                new EventInfo {
+                    EventType = EventType.TcpIpReceive,
+                    AsString = "TCP/IP Receive",
+                    Keyword = KernelTraceEventParser.Keywords.NetworkTCPIP,
+                    Category = EventCategory.Network
                 },
             };
 

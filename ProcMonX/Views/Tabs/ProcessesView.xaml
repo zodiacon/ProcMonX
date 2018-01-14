@@ -1,14 +1,13 @@
-﻿<UserControl x:Class="ProcMonX.Views.Tabs.EventsView"
+﻿<UserControl x:Class="ProcMonX.Views.Tabs.ProcessesView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ProcMonX.Views.Tabs"
              xmlns:sf="http://schemas.syncfusion.com/wpf"
              xmlns:conv="clr-namespace:ProcMonX.Converters"
-             xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:c="clr-namespace:ProcMonX.Controls"
              xmlns:z="http://zodiacon.wpf/2016"
-             xmlns:local="clr-namespace:ProcMonX.Views.Tabs"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -24,7 +23,7 @@
         <TextBox Width="400" HorizontalAlignment="Left" Margin="0,2" 
             Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged, Delay=250}" metro:TextBoxHelper.Watermark="Type to filter"
             metro:TextBoxHelper.ClearTextButton="True" metro:TextBoxHelper.SelectAllOnFocus="True" z:FocusProperties.FocusOnLoad="True"/>
-        
+
         <sf:SfDataGrid Grid.Row="1" ItemsSource="{Binding Events}" Style="{StaticResource SfDataGridStyle}" SelectionMode="Extended" IsReadOnly="True" AllowGrouping="True" 
                        ShowGroupDropArea="True" ColumnSizer="SizeToCells" BindableView="{Binding View, Mode=OneWayToSource}">
             <sf:SfDataGrid.Columns>
@@ -43,16 +42,14 @@
                 <sf:GridTextColumn HeaderText="PID" ValueBinding="{Binding ProcessId, Mode=OneTime}" MinimumWidth="50" TextAlignment="Center" />
                 <sf:GridTextColumn HeaderText="Process Name" ValueBinding="{Binding ProcessName, Mode=OneTime}" MinimumWidth="80" Width="120" ColumnSizer="SizeToCells" />
                 <sf:GridTextColumn HeaderText="TID" ValueBinding="{Binding ThreadId, Mode=OneTime}" MinimumWidth="50" TextAlignment="Center" MappingName="ThreadId"/>
-                <sf:GridTextColumn HeaderText="CPU" ValueBinding="{Binding Processor, Mode=OneTime}" ColumnSizer="SizeToHeader" AllowResizing="False" TextAlignment="Center"/>
+                <sf:GridTextColumn HeaderText="CPU" ValueBinding="{Binding Processor, Mode=OneTime}" ColumnSizer="SizeToHeader" AllowResizing="False" />
+                <sf:GridTextColumn HeaderText="Session" MappingName="SessionId" ColumnSizer="SizeToHeader" />
                 <sf:GridTextColumn HeaderText="Opcode" ValueBinding="{Binding Opcode, Mode=OneTime}" MinimumWidth="70" />
-                <sf:GridTemplateColumn HeaderText="Details" MinimumWidth="200" Width="500" MappingName="Details">
-                    <sf:GridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <c:MultiStyleTextBlock Text="{Binding Details, Mode=OneTime}">
-                            </c:MultiStyleTextBlock>
-                        </DataTemplate>
-                    </sf:GridTemplateColumn.CellTemplate>
-                </sf:GridTemplateColumn>
+                <sf:GridTextColumn HeaderText="Parent PID" MappingName="ParentId" MinimumWidth="50" />
+                <sf:GridTextColumn HeaderText="Exit Code" MappingName="ExitCode" MinimumWidth="50" />
+                <sf:GridTextColumn HeaderText="Flags" MappingName="Flags" MinimumWidth="50" />
+                <sf:GridTextColumn HeaderText="Command Line" MappingName="CommandLine" MinimumWidth="150" />
+                <sf:GridTextColumn HeaderText="Package Full Name" MappingName="PackageFullName" MinimumWidth="150" />
             </sf:SfDataGrid.Columns>
         </sf:SfDataGrid>
     </Grid>

@@ -67,7 +67,7 @@
             <Button Command="{Binding GoCommand}" ToolTip="Start Monitoring"  Content="{z:Image /icons/normal/play.ico, Width=24, Height=24}"  />
             <Button Command="{Binding StopCommand}" ToolTip="Stop Monitoring" Content="{z:Image /icons/normal/stop.ico, Width=24, Height=24}" />
             <Separator />
-            <Button Content="{z:Image /icons/normal/Event.ico, Width=24, Height=24}" ToolTip="All Events" Command="{Binding ViewTabCommand}" CommandParameter="AllEvents" />
+            <Button Content="{z:Image /icons/normal/Event.ico, Width=24, Height=24}" ToolTip="All Events" Command="{Binding ViewTabCommand}" CommandParameter="All Events" />
             <Button Content="{z:Image /icons/normal/Processes.ico, Width=24, Height=24}" ToolTip="Processes" Command="{Binding ViewTabCommand}" CommandParameter="Processes" />
             <Button Content="{z:Image /icons/normal/Module.ico, Width=24, Height=24}" ToolTip="Modules" Command="{Binding ViewTabCommand}" CommandParameter="Modules" />
             <Button Content="{z:Image /icons/normal/Threads.ico, Width=24, Height=24}" ToolTip="Threads" Command="{Binding ViewTabCommand}" CommandParameter="Threads" />
@@ -85,7 +85,7 @@
             </Button>
         </ToolBar>
 
-        <sf:TabControlExt Grid.Row="2" ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab, Mode=TwoWay}" CloseButtonType="Individual" Grid.Column="1" 
+        <sf:TabControlExt Grid.Row="2" ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab, Mode=TwoWay}" CloseButtonType="IndividualOnMouseOver" Grid.Column="1" 
                           HideHeaderOnSingleChild="False" EnableLabelEdit="False" HotTrackingEnabled="True" TabItemLayout="MultiLine" IsDisableUnloadTabItemExtContent="True"
                           sf:SkinStorage.VisualStyle="Metro" sf:SkinStorage.MetroBrush="{DynamicResource AccentColorBrush}">
             <i:Interaction.Behaviors>

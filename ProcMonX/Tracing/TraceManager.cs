@@ -75,16 +75,10 @@ namespace ProcMonX.Tracing {
 
         Dictionary<EventType, Action<TraceEvent>> _handlers;
 
-        public void SetupCallback(EventType type, bool add) {
-            if (_kernelParser == null)
-                return;
-
+        void SetupCallback(EventType type) {
             switch (type) {
                 case EventType.ProcessStart:
-                    if (add)
-                        _kernelParser.ProcessStart += _handlers[EventType.ProcessStart];
-                    else
-                        _kernelParser.ProcessStart -= _handlers[EventType.ProcessStart];
+                    _kernelParser.ProcessStart += _handlers[EventType.ProcessStart];
                     break;
 
                 case EventType.ProcessDCStart:
@@ -139,6 +133,14 @@ namespace ProcMonX.Tracing {
                     _kernelParser.ImageLoad += obj => HandleEvent(obj, EventType.ModuleLoad);
                     break;
 
+                case EventType.ModuleDCLoad:
+                    _kernelParser.ImageDCStart += obj => HandleEvent(obj, EventType.ModuleDCLoad);
+                    break;
+
+                case EventType.ModuleDCUnload:
+                    _kernelParser.ImageDCStop += obj => HandleEvent(obj, EventType.ModuleDCUnload);
+                    break;
+
                 case EventType.ModuleUnload:
                     _kernelParser.ImageUnload += obj => HandleEvent(obj, EventType.ModuleUnload);
                     break;
@@ -179,12 +181,44 @@ namespace ProcMonX.Tracing {
                     _kernelParser.VirtualMemFree += obj => HandleEvent(obj, EventType.MemoryFree);
                     break;
 
+                case EventType.DiskRead:
+                    _kernelParser.DiskIORead += obj => HandleEvent(obj, EventType.DiskRead);
+                    break;
+
+                case EventType.DiskWrite:
+                    _kernelParser.DiskIOWrite += obj => HandleEvent(obj, EventType.DiskWrite);
+                    break;
+
+                case EventType.TcpIpConnect:
+                    _kernelParser.TcpIpConnect += obj => HandleEvent(obj, EventType.TcpIpConnect);
+                    _kernelParser.TcpIpConnectIPV6 += obj => HandleEvent(obj, EventType.TcpIpConnect);
+                    break;
+
+                case EventType.TcpIpDisconnect:
+                    _kernelParser.TcpIpDisconnect += obj => HandleEvent(obj, EventType.TcpIpDisconnect);
+                    _kernelParser.TcpIpDisconnectIPV6 += obj => HandleEvent(obj, EventType.TcpIpDisconnect);
+                    break;
+
+                case EventType.TcpIpAccept:
+                    _kernelParser.TcpIpAccept += obj => HandleEvent(obj, EventType.TcpIpAccept);
+                    _kernelParser.TcpIpAcceptIPV6 += obj => HandleEvent(obj, EventType.TcpIpAccept);
+                    break;
+
+                case EventType.TcpIpSend:
+                    _kernelParser.TcpIpSend += obj => HandleEvent(obj, EventType.TcpIpSend);
+                    _kernelParser.TcpIpSendIPV6 += obj => HandleEvent(obj, EventType.TcpIpSend);
+                    break;
+
+                case EventType.TcpIpReceive:
+                    _kernelParser.TcpIpRecv += obj => HandleEvent(obj, EventType.TcpIpReceive);
+                    _kernelParser.TcpIpRecvIPV6 += obj => HandleEvent(obj, EventType.TcpIpReceive);
+                    break;
             }
         }
 
         private void SetupCallbacks(IEnumerable<EventType> types, bool add = true) {
             foreach (var type in types) {
-                SetupCallback(type, add);
+                SetupCallback(type);
             }
         }
 

@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace ProcMonX.ViewModels {
-    public sealed class TraceEventDataViewModel {
+    public class TraceEventDataViewModel {
         static int _globalIndex;
         public int Index { get; }
         public DateTime TimeStamp => Data.TimeStamp;
@@ -21,7 +21,7 @@ namespace ProcMonX.ViewModels {
 
         public int ProcessId => Data.ProcessID;
         public string ProcessName { get; }
-        public int? ThreadId => Data.ThreadID < 0 ? (int?)null : Data.ThreadID;
+        public int ThreadId => Data.ThreadID;
         public int Processor => Data.ProcessorNumber;
 
         public string Details { get; }

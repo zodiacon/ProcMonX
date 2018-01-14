@@ -10,6 +10,9 @@ using System.Windows.Data;
 namespace ProcMonX.Converters {
     sealed class EventTypeToIconConverter : IValueConverter {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+            if (value == null)
+                return Binding.DoNothing;
+
             return string.Intern($"/icons/events/{((TraceEventDataViewModel)value).Type.ToString()}.ico");
         }
 

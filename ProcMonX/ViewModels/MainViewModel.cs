@@ -26,6 +26,8 @@ namespace ProcMonX.ViewModels {
         public readonly TraceManager TraceManager = new TraceManager();
         ObservableCollection<TabItemViewModelBase> _tabs = new ObservableCollection<TabItemViewModelBase>();
         ObservableCollection<TraceEventDataViewModel> _events = new ObservableCollection<TraceEventDataViewModel>();
+        Dictionary<string, TabItemViewModelBase> _views = new Dictionary<string, TabItemViewModelBase>(8);
+
         EventType[] _eventTypes;
         List<TraceEventDataViewModel> _tempEvents = new List<TraceEventDataViewModel>(8192);
         DispatcherTimer _updateTimer;
@@ -46,31 +48,20 @@ namespace ProcMonX.ViewModels {
             Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.High;
             Thread.CurrentThread.Priority = ThreadPriority.Highest;
 
-            //AddEventTypes(
-            //    EventType.ProcessStart, EventType.ProcessStop,
-            //    EventType.ModuleLoad, EventType.ModuleUnload,
-            //    EventType.RegistrySetValue, EventType.RegistryDeleteKey, EventType.RegistryDeleteValue,
-            //    EventType.ThreadStart, EventType.ThreadStop,
-            //    EventType.FileRead, EventType.FileWrite, EventType.FileCreate, EventType.FileRename, EventType.FileDelete,
-            //    EventType.MemoryAlloc, EventType.MemoryFree,
-            //    EventType.AlpcSendMessage, EventType.AlpcReceiveMessage
-            //    );
-
             HookupEvents();
-            Init();
+
+            _captureSettings = new CaptureViewModel(this);
+            AddTab(_captureSettings, true);
 
             AddTab(_allEventsViewModel = new EventsViewModel(Events));
+            _views.Add(_allEventsViewModel.Text, _allEventsViewModel);
+            _views.Add(_captureSettings.Text, _captureSettings);
 
             _updateTimer = new DispatcherTimer(TimeSpan.FromMilliseconds(1500), DispatcherPriority.Background, (_, __) => Update(), 
                 Dispatcher.CurrentDispatcher);
             _updateTimer.Start();
 
         }
-
-        //public void AddEventTypes(params EventType[] types) {
-        //    foreach (var type in types)
-        //        _eventTypes.Add(type);
-        //}
 
         private void HookupEvents() {
             var dispatcher = Dispatcher.CurrentDispatcher;
@@ -86,14 +77,14 @@ namespace ProcMonX.ViewModels {
         private string GetDetails(TraceEvent evt) {
             switch (evt) {
                 case ProcessTraceData p:
-                    return $"Parent PID:;; {p.ParentID};; Command Line:;; {p.CommandLine};; Process Flags:;; {p.Flags};; 64 Bit:;; {p.PointerSize == 8}";
+                    return $"Parent PID:;; {p.ParentID};; Flags:;; {p.Flags};; 64 Bit:;; {p.PointerSize == 8};; Command Line:;; {p.CommandLine}";
 
                 case ThreadTraceData t:
                     return $"Win32 Start Address:;; 0x{t.Win32StartAddr:X};; Kernel Stack Base:;; 0x{t.StackBase:X}" + 
-                        $" User Stack Base:;; 0x{t.UserStackBase:X};; TEB:;; 0x{t.TebBase:X};; Parent TID:;; {t.ParentThreadID};; Parent PID:;; {t.ParentProcessID}";
+                        $" User Stack Base:;; 0x{t.UserStackBase:X};; TEB:;; 0x{t.TebBase:X};; Parent PID:;; {t.ParentProcessID}";
 
                 case RegistryTraceData r:
-                    return $"Key:;; {r.KeyName};; Value Name:;; {r.ValueName};; Status={r.Status};; Handle:;; 0x{r.KeyHandle:X}";
+                    return $"Key:;; {r.KeyName};; Value Name:;; {r.ValueName};; Status:;; 0x{r.Status:X};; Handle:;; 0x{r.KeyHandle:X}";
 
                 case ImageLoadTraceData m:
                     return $"Name:;; {m.FileName};; Address:;; 0x{m.ImageBase:X};; Base:;; 0x{m.DefaultBase:X};; size:;; 0x{m.ImageSize:X}";
@@ -105,10 +96,31 @@ namespace ProcMonX.ViewModels {
                     return $"Message ID: {alpc.MessageID}";
 
                 case FileIOReadWriteTraceData file:
-                    return $"Filename:;; {file.FileName};; Size:;; 0x{file.IoSize:X}";
+                    return $"Filename:;; {file.FileName};; Offset:;; {file.Offset:X};; Size:;; 0x{file.IoSize:X};; IRP:;; 0x{file.IrpPtr:X}";
 
                 case VirtualAllocTraceData mem:
                     return $"Address:;; 0x{mem.BaseAddr:X};; Size:;; 0x{mem.Length:X};; Flags:;; {(VirtualAllocFlags)(mem.Flags)}";
+
+                case TcpIpConnectTraceData connect:
+                    return $"Src Address:;; {connect.saddr.ToString()};; Dst Address:;; {connect.daddr.ToString()};; Dst Port:;; {connect.dport};; Src Port:;; {connect.sport};; Connection ID:;; {connect.connid}";
+
+                case TcpIpTraceData data:
+                    return $"Src Address:;; {data.saddr.ToString()};; Dst Address:;; {data.daddr.ToString()};; Dst Port:;; {data.dport};; Src Port:;; {data.sport};; Size:;; {data.size};; Connection ID:;; {data.connid}";
+
+                case TcpIpV6TraceData data:
+                    return $"Src Address:;; {data.saddr.ToString()};; Dst Address:;; {data.daddr.ToString()};; Dst Port:;; {data.dport};; Src Port:;; {data.sport};; Size:;; {data.size};; Connection ID:;; {data.connid}";
+
+                case TcpIpSendTraceData data:
+                    return $"Src Address:;; {data.saddr.ToString()};; Dst Address:;; {data.daddr.ToString()};; Dst Port:;; {data.dport};; Src Port:;; {data.sport};;" + 
+                        $" Size:;; {data.size};; Seq:;; {data.seqnum};; Start:;; {data.startime};; End:;; {data.endtime};; Connection ID:;; {data.connid}";
+
+                case TcpIpV6SendTraceData data:
+                    return $"Src Address:;; {data.saddr.ToString()};; Dst Address:;; {data.daddr.ToString()};; Dst Port:;; {data.dport};; Src Port:;; {data.sport};;" +
+                        $" Size:;; {data.size};; Seq:;; {data.seqnum};; Start:;; {data.startime};; End:;; {data.endtime};; Connection ID:;; {data.connid}";
+
+                case DiskIOTraceData data:
+                    return $"Disk:;; {data.DiskNumber};; Offset:;; {data.ByteOffset};; Size:;; {data.TransferSize};; Priority:;; {data.Priority};; IRP:;;" + 
+                        $" 0x{data.Irp:X};; IRP Flags:;; {data.IrpFlags};; File Key:;; 0x{data.FileKey:X};; Filename:;; {data.FileName}";
             }
             return string.Empty;
         }
@@ -145,14 +157,38 @@ namespace ProcMonX.ViewModels {
             set => SetProperty(ref _selectedTab, value); 
         }
 
-        public void AddTab(TabItemViewModelBase item, bool activate = false) {
+        public TabItemViewModelBase AddTab(TabItemViewModelBase item, bool activate = false) {
             _tabs.Add(item);
             if (activate)
                 SelectedTab = item;
+            return item;
         }
 
         public void RemoveTab(TabItemViewModelBase tab) {
             _tabs.Remove(tab);
+        }
+
+        public ICommand ViewTabCommand => new DelegateCommand<string>(name => {
+            if (_views.TryGetValue(name, out var view))
+                SelectedTab = view;
+            else {
+                var tab = CreateTab(name);
+                if (tab != null)
+                    _views.Add(tab.Text, tab);
+            }
+        });
+
+        private TabItemViewModelBase CreateTab(string name) {
+            TabItemViewModelBase tab = null;
+            switch (name) {
+                case "Processes":
+                    tab = new ProcessesViewModel(Events);
+                    break;
+            }
+
+            if (tab != null)
+                AddTab(tab, true);
+            return tab;
         }
 
         public DelegateCommandBase GoCommand => new DelegateCommand(
@@ -191,11 +227,6 @@ namespace ProcMonX.ViewModels {
             _updateTimer.Start();
         }
 
-        private void Init() {
-            _captureSettings = new CaptureViewModel(this);
-            AddTab(_captureSettings, true);
-        }
-
         public string Title => "Process Monitor X v0.1 (C)2018 by Pavel Yosifovich";
 
         public ICommand ExitCommand => new DelegateCommand(() => Application.Current.Shutdown());
@@ -228,6 +259,9 @@ namespace ProcMonX.ViewModels {
 
             TraceManager.Start(EventTypes);
             IsMonitoring = true;
+
+            foreach (var tab in _views.Values)
+                tab.Refresh();
         }
 
         public int LostEvents => TraceManager.LostEvents;
@@ -237,6 +271,8 @@ namespace ProcMonX.ViewModels {
             if (!SelectedTab.CanClose)
                 args.Cancel = true;
         });
+
+        public ICommand TabClosedCommand => new DelegateCommand<CloseTabEventArgs>(args => _views.Remove((args.TargetTabItem.DataContext as TabItemViewModelBase).Text));
 
         public ICommand SaveCommand => new DelegateCommand(() => {
             var filename = UI.FileDialogService.GetFileForSave("CSV Files (*.csv)|*.csv", "Select File");

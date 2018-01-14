@@ -1,5 +1,6 @@
 ﻿using Prism.Commands;
 using ProcMonX.Models;
+using ProcMonX.Tracing;
 using Syncfusion.Data;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace ProcMonX.ViewModels.Tabs {
         EventTypeViewModel[] _eventTypes;
         PropertyFollower<MainViewModel, CaptureViewModel> _isMonitoringProperty;
         MainViewModel _mainViewModel;
+        public TraceFilter TraceFilter { get; } = new TraceFilter();
 
         public CaptureViewModel(MainViewModel vm) {
             _isMonitoringProperty = new PropertyFollower<MainViewModel, CaptureViewModel>(vm, this, nameof(IsMonitoring));
@@ -32,6 +34,19 @@ namespace ProcMonX.ViewModels.Tabs {
 
         public ICommand MonitorNoneCommand => new DelegateCommand(() => MonitorAll(false), () => !IsMonitoring).ObservesProperty(() => IsMonitoring);
 
+        public ICommand MonitorSelectedCommand => new DelegateCommand(() => MonitorSelected(true));
+
+        public ICommand UnmonitorSelectedCommand => new DelegateCommand(() => MonitorSelected(false));
+
+        private void MonitorSelected(bool monitor) {
+            if (SelectedItems == null)
+                return;
+
+            foreach (EventTypeViewModel item in SelectedItems) {
+                item.IsMonitoring = monitor;
+            }
+        }
+
         public bool IsMonitoring => _mainViewModel.IsMonitoring;
         public bool IsNotMonitoring => !IsMonitoring;
 
@@ -41,5 +56,26 @@ namespace ProcMonX.ViewModels.Tabs {
         }
 
         public ICollectionViewAdv View { get; set; }
+
+        public string FilterText {
+            get => _filterText;
+            set {
+                if (SetProperty(ref _filterText, value)) {
+                    if (string.IsNullOrWhiteSpace(value))
+                        View.Filter = null;
+                    else {
+                        var text = value.ToLower();
+                        View.Filter = obj => {
+                            var item = (EventTypeViewModel)obj;
+                            return item.Name.ToLower().Contains(text) || item.Category.ToString().ToLower().Contains(text);
+                        };
+                    }
+                    View.RefreshFilter();
+                }
+            }
+        }
+        string _filterText;
+
+        public ObservableCollection<object> SelectedItems { get; set; }
     }
 }

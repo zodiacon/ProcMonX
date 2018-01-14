@@ -13,8 +13,7 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <NuGetPackageImportStamp></NuGetPackageImportStamp>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -87,8 +86,8 @@
     <Reference Include="Zodiacon.ManagedWindows.Core, Version=1.0.6575.31133, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Zodiacon.ManagedWindows.Core.0.1.3\lib\net45\Zodiacon.ManagedWindows.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Zodiacon.WPF, Version=1.1.6543.24348, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Zodiacon.WPF.1.2.15\lib\net45\Zodiacon.WPF.dll</HintPath>
+    <Reference Include="Zodiacon.WPF, Version=1.1.6588.27810, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Zodiacon.WPF.1.2.16\lib\net45\Zodiacon.WPF.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -104,12 +103,16 @@
     <Compile Include="Models\EventData.cs" />
     <Compile Include="Models\Events.cs" />
     <Compile Include="Models\VirtualAllocFlags.cs" />
+    <Compile Include="Tracing\Filters\ProcessIdFilter.cs" />
+    <Compile Include="Tracing\Filters\ProcessNameFilter.cs" />
     <Compile Include="Tracing\TraceFilter.cs" />
     <Compile Include="Tracing\TraceManager.cs" />
     <Compile Include="ViewModels\EventTypeViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\ProcessTraceEventViewModel.cs" />
     <Compile Include="ViewModels\TabItemViewModelBase.cs" />
     <Compile Include="ViewModels\Tabs\CaptureViewModel.cs" />
+    <Compile Include="ViewModels\Tabs\ProcessesViewModel.cs" />
     <Compile Include="ViewModels\TraceEventDataViewModel.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
@@ -120,6 +123,9 @@
     </Compile>
     <Compile Include="Views\Tabs\EventsView.xaml.cs">
       <DependentUpon>EventsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tabs\ProcessesView.xaml.cs">
+      <DependentUpon>ProcessesView.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\MultiStyleTextBlock.xaml">
       <SubType>Designer</SubType>
@@ -154,6 +160,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Tabs\EventsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tabs\ProcessesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -280,6 +290,47 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\Normal\open.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Category\disk.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Events\DiskWrite.ico" />
+    <Resource Include="Icons\Events\DiskRead.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Events\RegistryQueryMultipleValues.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Events\FileRename.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Events\TcpIpReceive.ico" />
+    <Resource Include="Icons\Events\computer_network-link.ico" />
+    <Resource Include="Icons\Events\TcpIpSend.ico" />
+    <Resource Include="Icons\Events\TcpIpConnect.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Events\TcpIpDisconnect.ico" />
+    <Resource Include="Icons\Events\TcpIpAccept.ico" />
+    <Resource Include="Icons\Events\link_network.ico" />
+    <Resource Include="Icons\Events\link_network_green_green.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Events\TcpIpSendIPv6.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Events\TcpIpReceiveIPv6.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Normal\delete.ico" />
+    <Resource Include="Icons\Normal\ok.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Events\ModuleDCLoad.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Events\ModuleDCUnload.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Diagnostics.Tracing.TraceEvent.1.0.41\build\Microsoft.Diagnostics.Tracing.TraceEvent.targets" Condition="Exists('..\packages\Microsoft.Diagnostics.Tracing.TraceEvent.1.0.41\build\Microsoft.Diagnostics.Tracing.TraceEvent.targets')" />

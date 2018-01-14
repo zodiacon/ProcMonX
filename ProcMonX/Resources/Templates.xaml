@@ -8,4 +8,7 @@
     <DataTemplate DataType="{x:Type vm:CaptureViewModel}">
         <view:CaptureView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:ProcessesViewModel}">
+        <view:ProcessesView />
+    </DataTemplate>
 </ResourceDictionary>
