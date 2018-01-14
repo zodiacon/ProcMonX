@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:sf="http://schemas.syncfusion.com/wpf"
+             xmlns:conv="clr-namespace:ProcMonX.Converters"
+             xmlns:c="clr-namespace:ProcMonX.Controls"
              xmlns:local="clr-namespace:ProcMonX.Views.Tabs"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
@@ -12,26 +14,37 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <sf:SfDataGrid Grid.Row="1" ItemsSource="{Binding Events}" AutoGenerateColumns="False" AllowResizingColumns="True" ColumnSizer="SizeToCells" NavigationMode="Row" SelectionMode="Single"
-                       sf:SkinStorage.VisualStyle="Metro" IsReadOnly="True">
+        <Grid.Resources>
+            <conv:EventTypeToIconConverter x:Key="iconConverter" />
+        </Grid.Resources>
+        <sf:SfDataGrid Grid.Row="1" ItemsSource="{Binding Events}" Style="{StaticResource SfDataGridStyle}" SelectionMode="Single" IsReadOnly="True" AllowGrouping="True" 
+                       ShowGroupDropArea="True" ColumnSizer="SizeToCells">
             <sf:SfDataGrid.Columns>
                 <sf:GridTextColumn HeaderText="Index" MappingName="Index" MinimumWidth="50" TextAlignment="Right" />
-                <sf:GridTemplateColumn HeaderText="Event" AllowResizing="False" AllowDragging="False" MappingName="TypeAsString">
+                <sf:GridTemplateColumn HeaderText="Event" AllowDragging="False" MappingName="TypeAsString" MinimumWidth="130" ColumnSizer="SizeToCells">
                     <sf:GridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{Binding Icon, Mode=OneTime}" Width="16" Height="16" />
-                                <TextBlock Text="{Binding TypeAsString}" Margin="2,0,0,0" VerticalAlignment="Center" />
+                                <Image Source="{Binding Mode=OneTime, Converter={StaticResource iconConverter}}" Width="16" Height="16" />
+                                <TextBlock Text="{Binding TypeAsString, Mode=OneTime}" Margin="4,0,0,0" VerticalAlignment="Center" />
                             </StackPanel>
                         </DataTemplate>
                     </sf:GridTemplateColumn.CellTemplate>
                 </sf:GridTemplateColumn>
-                <sf:GridTextColumn HeaderText="Time" ValueBinding="{Binding Data.TimeStamp, StringFormat=\{0:HH:mm:ss.ffff\}, Mode=OneTime}" />
-                <sf:GridTextColumn HeaderText="PID" ValueBinding="{Binding Data.ProcessID, Mode=OneTime}" MinimumWidth="50" />
-                <sf:GridTextColumn HeaderText="TID" ValueBinding="{Binding ThreadId, Mode=OneTime}" MinimumWidth="50" />
+                <sf:GridTextColumn HeaderText="Time" ValueBinding="{Binding TimeStamp, StringFormat=\{0:HH:mm:ss.ffff\}, Mode=OneTime}" />
+                <sf:GridTextColumn HeaderText="PID" ValueBinding="{Binding ProcessId, Mode=OneTime}" MinimumWidth="50" TextAlignment="Center" />
                 <sf:GridTextColumn HeaderText="Process Name" ValueBinding="{Binding ProcessName, Mode=OneTime}" MinimumWidth="80" Width="120" ColumnSizer="SizeToCells" />
-                <sf:GridTextColumn HeaderText="Opcode" ValueBinding="{Binding Data.OpcodeName, Mode=OneTime}" MinimumWidth="70" />
-                <sf:GridTextColumn HeaderText="Details" ValueBinding="{Binding Details, Mode=OneTime}" MinimumWidth="150" Width="250" />
+                <sf:GridTextColumn HeaderText="TID" ValueBinding="{Binding ThreadId, Mode=OneTime}" MinimumWidth="50" TextAlignment="Center" MappingName="ThreadId"/>
+                <sf:GridTextColumn HeaderText="CPU" ValueBinding="{Binding Processor, Mode=OneTime}" ColumnSizer="SizeToHeader" AllowResizing="False" />
+                <sf:GridTextColumn HeaderText="Opcode" ValueBinding="{Binding Opcode, Mode=OneTime}" MinimumWidth="70" />
+                <sf:GridTemplateColumn HeaderText="Details" ValueBinding="{Binding Details, Mode=OneTime}" MinimumWidth="200" Width="350" MappingName="Details">
+                    <sf:GridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <c:MultiStyleTextBlock Text="{Binding Details}">
+                            </c:MultiStyleTextBlock>
+                        </DataTemplate>
+                    </sf:GridTemplateColumn.CellTemplate>
+                </sf:GridTemplateColumn>
             </sf:SfDataGrid.Columns>
         </sf:SfDataGrid>
     </Grid>

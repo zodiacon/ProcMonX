@@ -12,6 +12,8 @@ namespace ProcMonX.ViewModels.Tabs {
             Events = events;
         }
 
+        internal override bool CanClose => false;
+
         public IList<TraceEventDataViewModel> Events { get; }
     }
 }

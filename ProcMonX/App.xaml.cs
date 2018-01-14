@@ -13,6 +13,8 @@ namespace ProcMonX {
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application {
+        public static string Title = "Process Monitor X";
+
         protected override void OnStartup(StartupEventArgs e) {
             base.OnStartup(e);
 

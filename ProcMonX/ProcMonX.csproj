@@ -47,6 +47,9 @@
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net462\ControlzEx.dll</HintPath>
     </Reference>
+    <Reference Include="CsvHelper, Version=6.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <HintPath>..\packages\CsvHelper.6.1.0\lib\net45\CsvHelper.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=1.6.0.184, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.6.0-alpha0184\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
@@ -93,10 +96,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\MultiStyleTextBlock.xaml.cs">
+      <DependentUpon>MultiStyleTextBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\EventTypeToIconConverter.cs" />
     <Compile Include="Extensions\IconProperties.cs" />
+    <Compile Include="Models\EventData.cs" />
     <Compile Include="Models\Events.cs" />
+    <Compile Include="Models\VirtualAllocFlags.cs" />
     <Compile Include="Tracing\TraceFilter.cs" />
     <Compile Include="Tracing\TraceManager.cs" />
+    <Compile Include="ViewModels\EventTypeViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\TabItemViewModelBase.cs" />
     <Compile Include="ViewModels\Tabs\CaptureViewModel.cs" />
@@ -105,9 +115,16 @@
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Tabs\EventsViewModel.cs" />
+    <Compile Include="Views\Tabs\CaptureView.xaml.cs">
+      <DependentUpon>CaptureView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Tabs\EventsView.xaml.cs">
       <DependentUpon>EventsView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Controls\MultiStyleTextBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -129,6 +146,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tabs\CaptureView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -195,7 +216,6 @@
     <Resource Include="Icons\Events\MemoryFree.ico" />
     <Resource Include="Icons\Events\ModuleLoad.ico" />
     <Resource Include="Icons\Events\ModuleUnload.ico" />
-    <Resource Include="Icons\Events\ProcessDCStart.ico" />
     <Resource Include="Icons\Events\ProcessStart.ico" />
     <Resource Include="Icons\Events\ProcessStop.ico" />
     <Resource Include="Icons\Events\RegistryCreateKey.ico" />
@@ -208,7 +228,6 @@
     <Resource Include="Icons\Events\RegistryQueryValue.ico" />
     <Resource Include="Icons\Events\RegistrySetValue.ico" />
     <Resource Include="Icons\Events\source_code-info.ico" />
-    <Resource Include="Icons\Events\ThreadDCStart.ico" />
     <Resource Include="Icons\Events\ThreadExists.ico" />
     <Resource Include="Icons\Events\ThreadStart.ico" />
     <Resource Include="Icons\Events\ThreadStop.ico" />
@@ -242,7 +261,26 @@
     <Resource Include="Icons\Tabs\registry.ico" />
     <Resource Include="Icons\Tabs\threads.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Icons\Normal\select_all.ico" />
+    <Resource Include="Icons\Normal\select_none.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Events\ProcessDCStart.ico" />
+    <Resource Include="Icons\Events\ThreadDCStart.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Events\FileDelete.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Events\FileCreate.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Normal\save.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Normal\open.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Diagnostics.Tracing.TraceEvent.1.0.41\build\Microsoft.Diagnostics.Tracing.TraceEvent.targets" Condition="Exists('..\packages\Microsoft.Diagnostics.Tracing.TraceEvent.1.0.41\build\Microsoft.Diagnostics.Tracing.TraceEvent.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

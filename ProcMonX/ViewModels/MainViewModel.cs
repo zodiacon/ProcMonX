@@ -1,14 +1,17 @@
-﻿using Microsoft.Diagnostics.Tracing;
+﻿using CsvHelper;
+using Microsoft.Diagnostics.Tracing;
 using Microsoft.Diagnostics.Tracing.Parsers.Kernel;
 using Prism.Commands;
 using Prism.Mvvm;
 using ProcMonX.Models;
 using ProcMonX.Tracing;
 using ProcMonX.ViewModels.Tabs;
+using Syncfusion.Windows.Tools.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -20,16 +23,18 @@ using Zodiacon.WPF;
 
 namespace ProcMonX.ViewModels {
     sealed class MainViewModel : BindableBase {
-        TraceManager _traceManager = new TraceManager();
+        public readonly TraceManager TraceManager = new TraceManager();
         ObservableCollection<TabItemViewModelBase> _tabs = new ObservableCollection<TabItemViewModelBase>();
         ObservableCollection<TraceEventDataViewModel> _events = new ObservableCollection<TraceEventDataViewModel>();
-        ObservableCollection<EventType> _eventTypes = new ObservableCollection<EventType>();
+        EventType[] _eventTypes;
         List<TraceEventDataViewModel> _tempEvents = new List<TraceEventDataViewModel>(8192);
         DispatcherTimer _updateTimer;
+        CaptureViewModel _captureSettings;
+        EventsViewModel _allEventsViewModel;
 
         public IList<TabItemViewModelBase> Tabs => _tabs;
 
-        public IList<EventType> EventTypes => _eventTypes;
+        public EventType[] EventTypes => _eventTypes;
 
         public IList<TraceEventDataViewModel> Events => _events;
 
@@ -41,20 +46,20 @@ namespace ProcMonX.ViewModels {
             Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.High;
             Thread.CurrentThread.Priority = ThreadPriority.Highest;
 
-            AddEventTypes(
-                EventType.ProcessStart, EventType.ProcessStop,
-                EventType.ModuleLoad, EventType.ModuleUnload,
-                EventType.RegistrySetValue, EventType.RegistryDeleteKey, EventType.RegistryDeleteValue,
-                EventType.ThreadStart, EventType.ThreadStop,
-                EventType.FileRead, EventType.FileWrite, EventType.FileCreate, EventType.FileRename, EventType.FileDelete,
-                EventType.MemoryAlloc, EventType.MemoryFree,
-                EventType.AlpcSendMessage, EventType.AlpcReceiveMessage
-                );
+            //AddEventTypes(
+            //    EventType.ProcessStart, EventType.ProcessStop,
+            //    EventType.ModuleLoad, EventType.ModuleUnload,
+            //    EventType.RegistrySetValue, EventType.RegistryDeleteKey, EventType.RegistryDeleteValue,
+            //    EventType.ThreadStart, EventType.ThreadStop,
+            //    EventType.FileRead, EventType.FileWrite, EventType.FileCreate, EventType.FileRename, EventType.FileDelete,
+            //    EventType.MemoryAlloc, EventType.MemoryFree,
+            //    EventType.AlpcSendMessage, EventType.AlpcReceiveMessage
+            //    );
 
             HookupEvents();
             Init();
 
-            AddTab(new EventsViewModel(Events), true);
+            AddTab(_allEventsViewModel = new EventsViewModel(Events));
 
             _updateTimer = new DispatcherTimer(TimeSpan.FromMilliseconds(1500), DispatcherPriority.Background, (_, __) => Update(), 
                 Dispatcher.CurrentDispatcher);
@@ -62,16 +67,15 @@ namespace ProcMonX.ViewModels {
 
         }
 
-        public void AddEventTypes(params EventType[] types) {
-            foreach (var type in types)
-                _eventTypes.Add(type);
-        }
+        //public void AddEventTypes(params EventType[] types) {
+        //    foreach (var type in types)
+        //        _eventTypes.Add(type);
+        //}
 
         private void HookupEvents() {
             var dispatcher = Dispatcher.CurrentDispatcher;
-            _traceManager.EventTrace += (evt, type) => {
+            TraceManager.EventTrace += (evt, type) => {
                 var info = GetDetails(evt);
-                //dispatcher.InvokeAsync(() => _events.Add(new TraceEventDataViewModel(evt, type, info)), DispatcherPriority.Background);
                 var data = new TraceEventDataViewModel(evt, type, info);
                 lock (_tempEvents)
                     _tempEvents.Add(data);
@@ -82,16 +86,17 @@ namespace ProcMonX.ViewModels {
         private string GetDetails(TraceEvent evt) {
             switch (evt) {
                 case ProcessTraceData p:
-                    return $"Parent PID: {p.ParentID}; Command Line={p.CommandLine}; Process Flags: {p.Flags}; Bitness: {p.PointerSize * 4}";
+                    return $"Parent PID:;; {p.ParentID};; Command Line:;; {p.CommandLine};; Process Flags:;; {p.Flags};; 64 Bit:;; {p.PointerSize == 8}";
 
                 case ThreadTraceData t:
-                    return $"Win32 Start Address: 0x{t.Win32StartAddr:X}; Kernel Stack Base: 0x{t.StackBase:X}; User Stack Base: 0x{t.UserStackBase:X}; TEB: 0x{t.TebBase:X}";
+                    return $"Win32 Start Address:;; 0x{t.Win32StartAddr:X};; Kernel Stack Base:;; 0x{t.StackBase:X}" + 
+                        $" User Stack Base:;; 0x{t.UserStackBase:X};; TEB:;; 0x{t.TebBase:X};; Parent TID:;; {t.ParentThreadID};; Parent PID:;; {t.ParentProcessID}";
 
                 case RegistryTraceData r:
-                    return $"Key: {r.KeyName}; Value Name={r.ValueName}; Status={r.Status}; Handle: 0x{r.KeyHandle:X}";
+                    return $"Key:;; {r.KeyName};; Value Name:;; {r.ValueName};; Status={r.Status};; Handle:;; 0x{r.KeyHandle:X}";
 
                 case ImageLoadTraceData m:
-                    return $"Name: {m.FileName}; Address: 0x{m.ImageBase:X}; Base: 0x{m.DefaultBase:X}; size: 0x{m.ImageSize:X}";
+                    return $"Name:;; {m.FileName};; Address:;; 0x{m.ImageBase:X};; Base:;; 0x{m.DefaultBase:X};; size:;; 0x{m.ImageSize:X}";
 
                 case ALPCSendMessageTraceData alpc:
                     return $"Message ID: {alpc.MessageID}";
@@ -100,10 +105,10 @@ namespace ProcMonX.ViewModels {
                     return $"Message ID: {alpc.MessageID}";
 
                 case FileIOReadWriteTraceData file:
-                    return $"Filename: {file.FileName}; Size: {file.IoSize};";
+                    return $"Filename:;; {file.FileName};; Size:;; 0x{file.IoSize:X}";
 
                 case VirtualAllocTraceData mem:
-                    return $"Address: 0x{mem.BaseAddr:X}; Size: 0x{mem.Length:X}; Flags: {mem.Flags}";
+                    return $"Address:;; 0x{mem.BaseAddr:X};; Size:;; 0x{mem.Length:X};; Flags:;; {(VirtualAllocFlags)(mem.Flags)}";
             }
             return string.Empty;
         }
@@ -146,6 +151,10 @@ namespace ProcMonX.ViewModels {
                 SelectedTab = item;
         }
 
+        public void RemoveTab(TabItemViewModelBase tab) {
+            _tabs.Remove(tab);
+        }
+
         public DelegateCommandBase GoCommand => new DelegateCommand(
             () => ResumeMonitoring(),
             () => !IsMonitoring)
@@ -183,6 +192,8 @@ namespace ProcMonX.ViewModels {
         }
 
         private void Init() {
+            _captureSettings = new CaptureViewModel(this);
+            AddTab(_captureSettings, true);
         }
 
         public string Title => "Process Monitor X v0.1 (C)2018 by Pavel Yosifovich";
@@ -200,19 +211,65 @@ namespace ProcMonX.ViewModels {
 
         private async void StopMonitoring() {
             IsBusy = true;
-            await Task.Run(() => _traceManager.Stop());
+            await Task.Run(() => TraceManager.Stop());
             IsBusy = false;
             IsMonitoring = false;
             SuspendUpdates = false;
         }
 
         private void ResumeMonitoring() {
-            _traceManager.Start(EventTypes, false);
+            _eventTypes = _captureSettings.EventTypes.Where(type => type.IsMonitoring).Select(type => type.Info.EventType).ToArray();
+            if (_eventTypes.Length == 0) {
+                UI.MessageBoxService.ShowMessage("No events selected to monitor", App.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
+            if (SelectedTab == _captureSettings)
+                SelectedTab = _allEventsViewModel;
+
+            TraceManager.Start(EventTypes);
             IsMonitoring = true;
         }
 
-        public int LostEvents => _traceManager.LostEvents;
+        public int LostEvents => TraceManager.LostEvents;
         public int EventCount => _events.Count + _tempEvents.Count;
 
+        public ICommand TabClosingCommand => new DelegateCommand<CancelingRoutedEventArgs>(args => {
+            if (!SelectedTab.CanClose)
+                args.Cancel = true;
+        });
+
+        public ICommand SaveCommand => new DelegateCommand(() => {
+            var filename = UI.FileDialogService.GetFileForSave("CSV Files (*.csv)|*.csv", "Select File");
+            if (filename == null)
+                return;
+
+            SaveInternal(filename);
+        }, () => !IsMonitoring).ObservesProperty(() => IsMonitoring);
+
+        private void SaveInternal(string filename) {
+            using (var writer = new StreamWriter(filename, append: false, encoding: Encoding.Unicode)) {
+                using (var csvWriter = new CsvWriter(writer)) {
+                    var data = _events.Select(evt => new EventData {
+                        Index = evt.Index,
+                        ProcessId = evt.ProcessId,
+                        ProcessName = evt.ProcessName,
+                        Details = evt.Details.Replace(";;", string.Empty),
+                        ThreadId = evt.ThreadId,
+                        CPU = evt.Processor,
+                        Opcode = evt.Opcode,
+                        EventType = evt.TypeAsString,
+                        Category = evt.Category.ToString(),
+                        Time = evt.TimeStamp
+                    });
+
+                    csvWriter.WriteHeader<EventData>();
+                    csvWriter.NextRecord();
+                    foreach (var evt in data) {
+                        csvWriter.WriteRecord(evt);
+                        csvWriter.NextRecord();
+                    }
+                }
+            }
+        }
     }
 }

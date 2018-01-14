@@ -26,5 +26,7 @@ namespace ProcMonX.ViewModels {
                 Icon = tabItemAttribute.Icon;
             }
         }
+
+        internal virtual bool CanClose => true;
     }
 }

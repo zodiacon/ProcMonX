@@ -21,8 +21,8 @@
 
         <Menu z:InputHelper.AttachInputBindings="True">
             <MenuItem Header="_File">
-                <MenuItem Header="_Open..." Command="{Binding OpenCommand}" />
-                <MenuItem Header="_Save..." Command="{Binding SaveCommand}" />
+                <MenuItem Header="_Open..." Command="{Binding OpenCommand}" Icon="{z:Image /icons/normal/open.ico, Width=20, Height=20}" />
+                <MenuItem Header="_Save..." Command="{Binding SaveCommand}" Icon="{z:Image /icons/normal/save.ico, Width=20, Height=20}" />
                 <Separator />
                 <MenuItem Header="E_xit" Command="{Binding ExitCommand}" />
             </MenuItem>
@@ -60,31 +60,29 @@
 
         <ToolBar Grid.Row="1" >
             <ToolBar.Resources>
-                <Style x:Key="{x:Static ToolBar.ButtonStyleKey}" TargetType="Button">
+                <Style TargetType="Button" x:Key="{x:Static ToolBar.ButtonStyleKey}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                     <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
-                    <Setter Property="ContentTemplate">
-                        <Setter.Value>
-                            <DataTemplate>
-                                <Image x:Name="image" Source="{Binding Path=(ext:IconProperties.Icon), RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Width="24" Height="24" />
-                            </DataTemplate>
-                        </Setter.Value>
-                    </Setter>
-                    <Style.Triggers>
-                    </Style.Triggers>
                 </Style>
             </ToolBar.Resources>
-            <Button Command="{Binding GoCommand}" ToolTip="Start Monitoring"  ext:IconProperties.Icon="/icons/normal/play.ico" />
-            <Button Command="{Binding StopCommand}" ToolTip="Stop Monitoring" ext:IconProperties.Icon="/icons/normal/stop.ico" />
+            <Button Command="{Binding GoCommand}" ToolTip="Start Monitoring"  Content="{z:Image /icons/normal/play.ico, Width=24, Height=24}"  />
+            <Button Command="{Binding StopCommand}" ToolTip="Stop Monitoring" Content="{z:Image /icons/normal/stop.ico, Width=24, Height=24}" />
             <Separator />
-            <Button ext:IconProperties.Icon="/icons/normal/Event.ico" ToolTip="All Events" Command="{Binding ViewTabCommand}" CommandParameter="AllEvents" />
-            <Button ext:IconProperties.Icon="/icons/normal/Processes.ico" ToolTip="Processes" Command="{Binding ViewTabCommand}" CommandParameter="Processes" />
-            <Button ext:IconProperties.Icon="/icons/normal/Module.ico" ToolTip="Modules" Command="{Binding ViewTabCommand}" CommandParameter="Modules" />
-            <Button ext:IconProperties.Icon="/icons/normal/Threads.ico" ToolTip="Threads" Command="{Binding ViewTabCommand}" CommandParameter="Threads" />
-            <Button ext:IconProperties.Icon="/icons/normal/Registry.ico" ToolTip="Registry" Command="{Binding ViewTabCommand}" CommandParameter="Registry" />
-            <Button ext:IconProperties.Icon="/icons/normal/Files.ico" ToolTip="Files" Command="{Binding ViewTabCommand}" CommandParameter="Files" />
-            <Button ext:IconProperties.Icon="/icons/normal/Memory.ico" ToolTip="Memory" Command="{Binding ViewTabCommand}" CommandParameter="Memory" />
-            <Button ext:IconProperties.Icon="/icons/normal/Network.ico" ToolTip="Network" Command="{Binding ViewTabCommand}" CommandParameter="Network" />
-            <Button ext:IconProperties.Icon="/icons/normal/Alpc.ico" ToolTip="ALPC" Command="{Binding ViewTabCommand}" CommandParameter="Alpc" />
+            <Button Content="{z:Image /icons/normal/Event.ico, Width=24, Height=24}" ToolTip="All Events" Command="{Binding ViewTabCommand}" CommandParameter="AllEvents" />
+            <Button Content="{z:Image /icons/normal/Processes.ico, Width=24, Height=24}" ToolTip="Processes" Command="{Binding ViewTabCommand}" CommandParameter="Processes" />
+            <Button Content="{z:Image /icons/normal/Module.ico, Width=24, Height=24}" ToolTip="Modules" Command="{Binding ViewTabCommand}" CommandParameter="Modules" />
+            <Button Content="{z:Image /icons/normal/Threads.ico, Width=24, Height=24}" ToolTip="Threads" Command="{Binding ViewTabCommand}" CommandParameter="Threads" />
+            <Button Content="{z:Image /icons/normal/Registry.ico, Width=24, Height=24}" ToolTip="Registry" Command="{Binding ViewTabCommand}" CommandParameter="Registry" />
+            <Button Content="{z:Image /icons/normal/Files.ico, Width=24, Height=24}" ToolTip="Files" Command="{Binding ViewTabCommand}" CommandParameter="Files" />
+            <Button Content="{z:Image /icons/normal/Memory.ico, Width=24, Height=24}" ToolTip="Memory" Command="{Binding ViewTabCommand}" CommandParameter="Memory" />
+            <Button Content="{z:Image /icons/normal/Network.ico, Width=24, Height=24}" ToolTip="Network" Command="{Binding ViewTabCommand}" CommandParameter="Network" />
+            <Button Content="{z:Image /icons/normal/Alpc.ico, Width=24, Height=24}" ToolTip="ALPC" Command="{Binding ViewTabCommand}" CommandParameter="Alpc" />
+            <Separator />
+            <Button Command="{Binding ClearAllCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/icons/normal/clear.ico" Width="24" Height="24" />
+                    <TextBlock Text="Clear All" VerticalAlignment="Center" Margin="4,0,0,0" />
+                </StackPanel>
+            </Button>
         </ToolBar>
 
         <sf:TabControlExt Grid.Row="2" ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab, Mode=TwoWay}" CloseButtonType="Individual" Grid.Column="1" 

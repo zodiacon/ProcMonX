@@ -6,21 +6,21 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ProcMonX.Models {
-    enum EventType {
+    public enum EventType {
         None,
         ProcessStart = 100, ProcessStop, ProcessDCStart, ProcessDCStop,
         ThreadStart = 200, ThreadStop, ThreadDCStart, ThreadDCStop,
         MemoryAlloc = 300, MemoryFree,
         RegistryOpenKey = 400, RegistryQueryValue, RegistrySetValue, RegistryCreateKey,
         RegistryCloseKey, RegistryEnumerateKey, RegistryEnumerateValues, RegistryFlush,
-        RegistryDeleteKey, RegistryDeleteValue,
+        RegistryDeleteKey, RegistryDeleteValue, RegistryQueryMultipleValues,
         AlpcSendMessage = 500, AlpcReceiveMessage,
         ModuleLoad = 600, ModuleUnload,
         FileRead = 700, FileWrite, FileCreate, FileRename, FileDelete, FileQueryInfo,
         DiskRead = 800, DiskWrite,
     }
 
-    enum EventCategory {
+    public enum EventCategory {
         None,
         Processes,
         Threads,
@@ -93,6 +93,12 @@ namespace ProcMonX.Models {
                 new EventInfo {
                     EventType = EventType.RegistryQueryValue,
                     AsString = "Registry Query Value",
+                    Keyword = KernelTraceEventParser.Keywords.Registry,
+                    Category = EventCategory.Registry
+                },
+                new EventInfo {
+                    EventType = EventType.RegistryQueryMultipleValues,
+                    AsString = "Registry Query Multiple Values",
                     Keyword = KernelTraceEventParser.Keywords.Registry,
                     Category = EventCategory.Registry
                 },

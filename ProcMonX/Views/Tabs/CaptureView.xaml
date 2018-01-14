@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="ProcMonX.Views.Tabs.CaptureView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ProcMonX.Views.Tabs"
+             xmlns:sf="http://schemas.syncfusion.com/wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <ToolBar Background="{DynamicResource WhiteBrush}">
+            <Button Command="{Binding MonitorAllCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/icons/normal/select_all.ico" Width="24" Height="24" />
+                    <TextBlock Text="Monitor All" VerticalAlignment="Center" Margin="4,0,0,0" />
+                </StackPanel>
+            </Button>
+            <Button Command="{Binding MonitorNoneCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/icons/normal/select_none.ico" Width="24" Height="24" />
+                    <TextBlock Text="Monitor None" VerticalAlignment="Center" Margin="4,0,0,0" />
+                </StackPanel>
+            </Button>
+        </ToolBar>
+        <sf:SfDataGrid Grid.Row="2" ItemsSource="{Binding EventTypes}" Style="{StaticResource SfDataGridStyle}" AllowGrouping="True" ShowGroupDropArea="True" 
+                       IsReadOnly="{Binding IsMonitoring}" >
+            <sf:SfDataGrid.Columns>
+                <sf:GridTemplateColumn HeaderText="Event Type" MappingName="Name">
+                    <sf:GridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{Binding Icon}" Width="20" Height="20" />
+                                <TextBlock Text="{Binding Name}" Margin="4,0,0,0" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </sf:GridTemplateColumn.CellTemplate>
+                </sf:GridTemplateColumn>
+                <sf:GridTextColumn HeaderText="Category" MappingName="Category" MinimumWidth="100" />
+                <sf:GridCheckBoxColumn HeaderText="Monitor?" MappingName="IsMonitoring" ColumnSizer="SizeToHeader" AllowEditing="{Binding IsNotMonitoring}" IsReadOnly="{Binding IsMonitoring}" />
+            </sf:SfDataGrid.Columns>
+        </sf:SfDataGrid>
+    </Grid>
+</UserControl>

@@ -5,4 +5,7 @@
     <DataTemplate DataType="{x:Type vm:EventsViewModel}">
         <view:EventsView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:CaptureViewModel}">
+        <view:CaptureView />
+    </DataTemplate>
 </ResourceDictionary>
