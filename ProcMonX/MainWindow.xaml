@@ -8,7 +8,7 @@
         xmlns:local="clr-namespace:ProcMonX"
         mc:Ignorable="d"
         Title="{Binding Title}" MinHeight="350" MinWidth="525" TitleCaps="False"
-                   Icon="/icons/app.ico" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1" ResizeBorderThickness="2">
+            Icon="/icons/app.ico" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1" ResizeBorderThickness="2">
     <view:MainView>
         
     </view:MainView>

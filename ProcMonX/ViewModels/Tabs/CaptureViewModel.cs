@@ -38,6 +38,12 @@ namespace ProcMonX.ViewModels.Tabs {
 
         public ICommand UnmonitorSelectedCommand => new DelegateCommand(() => MonitorSelected(false));
 
+        public ICommand ToggleSelectionCommand => new DelegateCommand(() => {
+            foreach (EventTypeViewModel item in SelectedItems) {
+                item.IsMonitoring = !item.IsMonitoring;
+            }
+        });
+
         private void MonitorSelected(bool monitor) {
             if (SelectedItems == null)
                 return;

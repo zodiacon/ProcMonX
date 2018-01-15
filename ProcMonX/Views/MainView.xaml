@@ -3,19 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:ProcMonX.Views"
              xmlns:sf="http://schemas.syncfusion.com/wpf"
+             xmlns:vm="clr-namespace:ProcMonX.ViewModels.Tabs"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:ext="clr-namespace:ProcMonX.Extensions"
              xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:z="http://zodiacon.wpf/2016"
+             xmlns:z="http://zodiacon.wpf/2016" x:Name="This"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
@@ -56,6 +58,9 @@
                 <MenuItem Header="_Fonts..." />
                 <MenuItem Header="_Colors..." />
             </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About Process Monitor X..." Command="{Binding AboutCommand}" />
+            </MenuItem>
         </Menu>
 
         <ToolBar Grid.Row="1" >
@@ -85,9 +90,11 @@
             </Button>
         </ToolBar>
 
-        <sf:TabControlExt Grid.Row="2" ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab, Mode=TwoWay}" CloseButtonType="IndividualOnMouseOver" Grid.Column="1" 
-                          HideHeaderOnSingleChild="False" EnableLabelEdit="False" HotTrackingEnabled="True" TabItemLayout="MultiLine" IsDisableUnloadTabItemExtContent="True"
-                          sf:SkinStorage.VisualStyle="Metro" sf:SkinStorage.MetroBrush="{DynamicResource AccentColorBrush}">
+        <sf:TabControlExt Grid.Row="2" ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab, Mode=TwoWay}" CloseButtonType="Individual" 
+                          EnableLabelEdit="False" IsDisableUnloadTabItemExtContent="True"
+                          sf:SkinStorage.VisualStyle="Metro" sf:SkinStorage.MetroBrush="{DynamicResource AccentColorBrush}" TabItemSelectedBackground="{DynamicResource AccentColorBrush}"
+                          TabItemSelectedForeground="{DynamicResource WhiteBrush}" TabItemHoverBackground="{DynamicResource AccentColorBrush3}" TabItemHoverForeground="{DynamicResource WhiteBrush}"
+                          >
             <i:Interaction.Behaviors>
                 <z:EventToCommand EventName="TabClosed" Command="{Binding TabClosedCommand}" />
                 <z:EventToCommand EventName="TabClosing" Command="{Binding TabClosingCommand}" />
@@ -107,6 +114,8 @@
             <Image Source="/icons/normal/stop.ico" metro:VisibilityHelper.IsCollapsed="{Binding IsMonitoring}" Width="16" Height="16" />
             <Separator />
             <TextBlock Text="{Binding EventCount, StringFormat=Events: \{0\}}" />
+            <Separator />
+            <TextBlock Text="{Binding LostEvents, StringFormat=Lost Events: \{0\}}" />
         </StatusBar>
     </Grid>
 </UserControl>

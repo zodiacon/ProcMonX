@@ -76,33 +76,33 @@ namespace ProcMonX.ViewModels {
 
         private string GetDetails(TraceEvent evt) {
             switch (evt) {
-                case ProcessTraceData p:
-                    return $"Parent PID:;; {p.ParentID};; Flags:;; {p.Flags};; 64 Bit:;; {p.PointerSize == 8};; Command Line:;; {p.CommandLine}";
+                case ProcessTraceData data:
+                    return $"Parent PID:;; {data.ParentID};; Flags:;; {data.Flags};; Image Path:;; {data.ImageFileName};; Command Line:;; {data.CommandLine}";
 
-                case ThreadTraceData t:
-                    return $"Win32 Start Address:;; 0x{t.Win32StartAddr:X};; Kernel Stack Base:;; 0x{t.StackBase:X}" + 
-                        $" User Stack Base:;; 0x{t.UserStackBase:X};; TEB:;; 0x{t.TebBase:X};; Parent PID:;; {t.ParentProcessID}";
+                case ThreadTraceData data:
+                    return $"Win32 Start Address:;; 0x{data.Win32StartAddr:X};; Kernel Stack Base:;; 0x{data.StackBase:X}" + 
+                        $" User Stack Base:;; 0x{data.UserStackBase:X};; TEB:;; 0x{data.TebBase:X};; Parent PID:;; {data.ParentProcessID}";
 
-                case RegistryTraceData r:
-                    return $"Key:;; {r.KeyName};; Value Name:;; {r.ValueName};; Status:;; 0x{r.Status:X};; Handle:;; 0x{r.KeyHandle:X}";
+                case RegistryTraceData data:
+                    return $"Key:;; {data.KeyName};; Value Name:;; {data.ValueName};; Status:;; 0x{data.Status:X};; Handle:;; 0x{data.KeyHandle:X}";
 
-                case ImageLoadTraceData m:
-                    return $"Name:;; {m.FileName};; Address:;; 0x{m.ImageBase:X};; Base:;; 0x{m.DefaultBase:X};; size:;; 0x{m.ImageSize:X}";
+                case ImageLoadTraceData data:
+                    return $"Name:;; {data.FileName};; Address:;; 0x{data.ImageBase:X};; Base:;; 0x{data.DefaultBase:X};; size:;; 0x{data.ImageSize:X}";
 
-                case ALPCSendMessageTraceData alpc:
-                    return $"Message ID: {alpc.MessageID}";
+                case ALPCSendMessageTraceData data:
+                    return $"Message ID: {data.MessageID}";
 
                 case ALPCReceiveMessageTraceData alpc:
                     return $"Message ID: {alpc.MessageID}";
 
-                case FileIOReadWriteTraceData file:
-                    return $"Filename:;; {file.FileName};; Offset:;; {file.Offset:X};; Size:;; 0x{file.IoSize:X};; IRP:;; 0x{file.IrpPtr:X}";
+                case FileIOReadWriteTraceData data:
+                    return $"Filename:;; {data.FileName};; Offset:;; {data.Offset:X};; Size:;; 0x{data.IoSize:X};; IRP:;; 0x{data.IrpPtr:X}";
 
-                case VirtualAllocTraceData mem:
-                    return $"Address:;; 0x{mem.BaseAddr:X};; Size:;; 0x{mem.Length:X};; Flags:;; {(VirtualAllocFlags)(mem.Flags)}";
+                case VirtualAllocTraceData data:
+                    return $"Address:;; 0x{data.BaseAddr:X};; Size:;; 0x{data.Length:X};; Flags:;; {(VirtualAllocFlags)(data.Flags)}";
 
-                case TcpIpConnectTraceData connect:
-                    return $"Src Address:;; {connect.saddr.ToString()};; Dst Address:;; {connect.daddr.ToString()};; Dst Port:;; {connect.dport};; Src Port:;; {connect.sport};; Connection ID:;; {connect.connid}";
+                case TcpIpConnectTraceData data:
+                    return $"Src Address:;; {data.saddr.ToString()};; Dst Address:;; {data.daddr.ToString()};; Dst Port:;; {data.dport};; Src Port:;; {data.sport};; Connection ID:;; {data.connid}";
 
                 case TcpIpTraceData data:
                     return $"Src Address:;; {data.saddr.ToString()};; Dst Address:;; {data.daddr.ToString()};; Dst Port:;; {data.dport};; Src Port:;; {data.sport};; Size:;; {data.size};; Connection ID:;; {data.connid}";
@@ -204,10 +204,6 @@ namespace ProcMonX.ViewModels {
         void Update() {
             _updateTimer.Stop();
             if (!SuspendUpdates) {
-                Debug.WriteLine($"{Environment.TickCount} Updating collection");
-
-                var sw = Stopwatch.StartNew();
-
                 lock (_tempEvents) {
                     int count = Math.Min(_tempEvents.Count, IsMonitoring ? 3072 : 8192);
                     for (int i = 0; i < count; i++)
@@ -215,11 +211,6 @@ namespace ProcMonX.ViewModels {
                     _tempEvents.RemoveRange(0, count);
                     IsBusy = _tempEvents.Count > 0;
                 }
-                sw.Stop();
-                //if (IsMonitoring && sw.ElapsedMilliseconds > 800) {
-                //    // update is taking too long, suspend updates
-                //    SuspendUpdates = true;
-                //}
             }
             RaisePropertyChanged(nameof(LostEvents));
             RaisePropertyChanged(nameof(EventCount));

@@ -21,9 +21,8 @@ namespace ProcMonX {
             var ui = new UIServicesDefaults();
             var vm = new MainViewModel(ui);
             var win = new MainWindow { DataContext = vm };
-            win.Show();
             ui.MessageBoxService.SetOwner(win);
-
+            win.Show();
         }
     }
 }

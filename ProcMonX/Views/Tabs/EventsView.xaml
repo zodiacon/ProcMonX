@@ -39,6 +39,7 @@
                         </DataTemplate>
                     </sf:GridTemplateColumn.CellTemplate>
                 </sf:GridTemplateColumn>
+                <sf:GridTextColumn HeaderText="Category" MappingName="Category" MinimumWidth="80" />
                 <sf:GridTextColumn HeaderText="Time" ValueBinding="{Binding TimeStamp, StringFormat=\{0:HH:mm:ss.ffff\}, Mode=OneTime}" />
                 <sf:GridTextColumn HeaderText="PID" ValueBinding="{Binding ProcessId, Mode=OneTime}" MinimumWidth="50" TextAlignment="Center" />
                 <sf:GridTextColumn HeaderText="Process Name" ValueBinding="{Binding ProcessName, Mode=OneTime}" MinimumWidth="80" Width="120" ColumnSizer="SizeToCells" />

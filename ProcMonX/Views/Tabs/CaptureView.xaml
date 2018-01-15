@@ -4,8 +4,9 @@
              xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:ProcMonX.Views.Tabs"
              xmlns:z="http://zodiacon.wpf/2016"
+             xmlns:conv="clr-namespace:ProcMonX.Converters"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:sf="http://schemas.syncfusion.com/wpf"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
@@ -43,14 +44,13 @@
                 </StackPanel>
             </Button>
         </ToolBar>
-        
-        <TextBox Width="300" HorizontalAlignment="Left" Margin="0,2" Grid.Row="1"
-            Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged, Delay=250}" metro:TextBoxHelper.Watermark="Type to filter"
-            metro:TextBoxHelper.ClearTextButton="True" metro:TextBoxHelper.SelectAllOnFocus="True" />
-        
+       
         <sf:SfDataGrid Grid.Row="2" ItemsSource="{Binding EventTypes}" Style="{StaticResource SfDataGridStyle}" AllowGrouping="True" ShowGroupDropArea="True" 
                        IsReadOnly="{Binding IsMonitoring}" BindableView="{Binding View, Mode=OneWayToSource}" SelectionMode="Extended" 
                        SelectedItems="{Binding SelectedItems, Mode=OneWayToSource}">
+            <i:Interaction.Behaviors>
+                <z:EventToCommand EventName="MouseDoubleClick" Command="{Binding ToggleSelectionCommand}" />
+            </i:Interaction.Behaviors>
             <sf:SfDataGrid.Columns>
                 <sf:GridTemplateColumn HeaderText="Event Type" MappingName="Name">
                     <sf:GridTemplateColumn.CellTemplate>
@@ -63,8 +63,13 @@
                     </sf:GridTemplateColumn.CellTemplate>
                 </sf:GridTemplateColumn>
                 <sf:GridTextColumn HeaderText="Category" MappingName="Category" MinimumWidth="100" />
-                <sf:GridCheckBoxColumn HeaderText="Monitor?" MappingName="IsMonitoring" ColumnSizer="SizeToHeader" AllowEditing="{Binding IsNotMonitoring}" />
+                <sf:GridCheckBoxColumn HeaderText="Monitor?" IsThreeState="False" MappingName="IsMonitoring" ColumnSizer="SizeToHeader" AllowEditing="{Binding IsNotMonitoring}" />
             </sf:SfDataGrid.Columns>
         </sf:SfDataGrid>
+
+        <TextBox Width="300" HorizontalAlignment="Left" Margin="0,2" Grid.Row="1" Text="{Binding FilterText, Delay=250, UpdateSourceTrigger=PropertyChanged}"
+            metro:TextBoxHelper.Watermark="Type to filter"
+            metro:TextBoxHelper.ClearTextButton="True" metro:TextBoxHelper.SelectAllOnFocus="True" z:FocusProperties.FocusOnLoad="True" />
+
     </Grid>
 </UserControl>

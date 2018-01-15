@@ -10,20 +10,20 @@ using System.Threading.Tasks;
 
 namespace ProcMonX.ViewModels {
     sealed class ProcessTraceEventViewModel : TraceEventDataViewModel {
-        ProcessTraceData _data;
+        public readonly ProcessTraceData ProcessData;
         internal ProcessTraceEventViewModel(TraceEventDataViewModel evt) : base(evt.Data, evt.Type, evt.Details) {
-            _data = (ProcessTraceData)evt.Data;
-            Debug.Assert(_data != null);
+            ProcessData = (ProcessTraceData)evt.Data;
+            Debug.Assert(ProcessData != null);
         }
 
-        public string CommandLine => _data.CommandLine;
-        public int Session => _data.SessionID;
-        public ulong Key => _data.UniqueProcessKey;
-        public string ImageFileName => _data.ImageFileName;
-        public int ParentID => _data.ParentID;
-        public string PackageFullName => _data.PackageFullName;
-        public int ExitCode => _data.ExitStatus;
-        public ProcessFlags Flags => _data.Flags;
-        public string AppId => _data.ApplicationID;
+        public string CommandLine => ProcessData.CommandLine;
+        public int Session => ProcessData.SessionID;
+        public ulong Key => ProcessData.UniqueProcessKey;
+        public string ImageFileName => ProcessData.ImageFileName;
+        public int ParentID => ProcessData.ParentID;
+        public string PackageFullName => ProcessData.PackageFullName;
+        public int ExitCode => ProcessData.ExitStatus;
+        public ProcessFlags Flags => ProcessData.Flags;
+        public string AppId => ProcessData.ApplicationID;
     }
 }
