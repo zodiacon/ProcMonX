@@ -166,7 +166,7 @@ namespace ProcMonX.Tracing {
                     break;
 
                 case EventType.FileCreate:
-                    _kernelParser.FileIOFileCreate += obj => HandleEvent(obj, EventType.FileCreate);
+                    _kernelParser.FileIOCreate += obj => HandleEvent(obj, EventType.FileCreate);
                     break;
 
                 case EventType.FileDelete:

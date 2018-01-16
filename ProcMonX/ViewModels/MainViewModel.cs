@@ -103,6 +103,9 @@ namespace ProcMonX.ViewModels {
                 case FileIOSimpleOpTraceData data:
                     return $"Filename:;; {data.FileName};; File Object:;; 0x{data.FileObject:X};; IRP:;; 0x{data.IrpPtr:X}";
 
+                case FileIOCreateTraceData data:
+                    return $"Attributes:;; {data.FileAttributes};; Options:;; {data.CreateOptions};; Sharing:;; {data.ShareAccess};; File Object:;; 0x{data.FileObject:X};; IRP:;; 0x{data.IrpPtr}";
+
                 case VirtualAllocTraceData data:
                     return $"Address:;; 0x{data.BaseAddr:X};; Size:;; 0x{data.Length:X};; Flags:;; {(VirtualAllocFlags)(data.Flags)}";
 
