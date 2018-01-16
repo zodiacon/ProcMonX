@@ -42,7 +42,7 @@
                 <sf:GridTextColumn HeaderText="PID" ValueBinding="{Binding ProcessId, Mode=OneTime}" MinimumWidth="50" TextAlignment="Center" />
                 <sf:GridTextColumn HeaderText="Process Name" ValueBinding="{Binding ProcessName, Mode=OneTime}" MinimumWidth="80" Width="120" ColumnSizer="SizeToCells" />
                 <sf:GridTextColumn HeaderText="TID" ValueBinding="{Binding ThreadId, Mode=OneTime}" MinimumWidth="50" TextAlignment="Center" MappingName="ThreadId"/>
-                <sf:GridTextColumn HeaderText="CPU" ValueBinding="{Binding Processor, Mode=OneTime}" ColumnSizer="SizeToHeader" AllowResizing="False" />
+                <sf:GridTextColumn HeaderText="CPU" ValueBinding="{Binding Processor, Mode=OneTime}" ColumnSizer="SizeToHeader" AllowResizing="False" TextAlignment="Center" />
                 <sf:GridTextColumn HeaderText="Session" MappingName="SessionId" ColumnSizer="SizeToHeader" />
                 <sf:GridTextColumn HeaderText="Opcode" ValueBinding="{Binding Opcode, Mode=OneTime}" MinimumWidth="70" />
                 <sf:GridTextColumn HeaderText="Parent PID" MappingName="ParentId" MinimumWidth="50" />

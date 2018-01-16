@@ -97,8 +97,10 @@
       <DependentUpon>MultiStyleTextBlock.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\EventTypeToIconConverter.cs" />
+    <Compile Include="Converters\TextBoxProperties.cs" />
     <Compile Include="Models\EventData.cs" />
     <Compile Include="Models\Events.cs" />
+    <Compile Include="Models\Options.cs" />
     <Compile Include="Models\VirtualAllocFlags.cs" />
     <Compile Include="Tracing\Filters\ProcessIdFilter.cs" />
     <Compile Include="Tracing\Filters\ProcessNameFilter.cs" />

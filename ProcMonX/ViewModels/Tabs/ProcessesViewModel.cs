@@ -8,10 +8,13 @@ using System.Threading.Tasks;
 namespace ProcMonX.ViewModels.Tabs {
     [TabItem(Text = "Processes", Icon = "/icons/tabs/processes.ico")]
     sealed class ProcessesViewModel : TabItemViewModelBase {
-        public IEnumerable<ProcessTraceEventViewModel> Events { get; }
+        IEnumerable<TraceEventDataViewModel> _original;
+
+        public IEnumerable<ProcessTraceEventViewModel> Events => _original.Where(evt => evt.Category == EventCategory.Processes).Select(evt => new ProcessTraceEventViewModel(evt));
 
         public ProcessesViewModel(IEnumerable<TraceEventDataViewModel> events) {
-            Events = events.Where(evt => evt.Category == EventCategory.Processes).Select(evt => new ProcessTraceEventViewModel(evt));
+            _original = events;
+            Refresh();
         }
 
         public override void Refresh() {

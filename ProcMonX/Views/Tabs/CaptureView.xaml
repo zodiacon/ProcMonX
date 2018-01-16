@@ -44,7 +44,11 @@
                 </StackPanel>
             </Button>
         </ToolBar>
-       
+
+        <TextBox Width="300" HorizontalAlignment="Left" Margin="0,2" Grid.Row="1" Text="{Binding FilterText, Delay=250, UpdateSourceTrigger=PropertyChanged}"
+            metro:TextBoxHelper.Watermark="Type to filter" z:FocusProperties.FocusOnLoad="True" 
+            metro:TextBoxHelper.ClearTextButton="True" metro:TextBoxHelper.SelectAllOnFocus="True" />
+
         <sf:SfDataGrid Grid.Row="2" ItemsSource="{Binding EventTypes}" Style="{StaticResource SfDataGridStyle}" AllowGrouping="True" ShowGroupDropArea="True" 
                        IsReadOnly="{Binding IsMonitoring}" BindableView="{Binding View, Mode=OneWayToSource}" SelectionMode="Extended" 
                        SelectedItems="{Binding SelectedItems, Mode=OneWayToSource}">
@@ -66,10 +70,6 @@
                 <sf:GridCheckBoxColumn HeaderText="Monitor?" IsThreeState="False" MappingName="IsMonitoring" ColumnSizer="SizeToHeader" AllowEditing="{Binding IsNotMonitoring}" />
             </sf:SfDataGrid.Columns>
         </sf:SfDataGrid>
-
-        <TextBox Width="300" HorizontalAlignment="Left" Margin="0,2" Grid.Row="1" Text="{Binding FilterText, Delay=250, UpdateSourceTrigger=PropertyChanged}"
-            metro:TextBoxHelper.Watermark="Type to filter"
-            metro:TextBoxHelper.ClearTextButton="True" metro:TextBoxHelper.SelectAllOnFocus="True" z:FocusProperties.FocusOnLoad="True" />
 
     </Grid>
 </UserControl>

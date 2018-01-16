@@ -20,7 +20,7 @@ namespace ProcMonX.ViewModels {
         public int Session => ProcessData.SessionID;
         public ulong Key => ProcessData.UniqueProcessKey;
         public string ImageFileName => ProcessData.ImageFileName;
-        public int ParentID => ProcessData.ParentID;
+        public int ParentId => ProcessData.ParentID;
         public string PackageFullName => ProcessData.PackageFullName;
         public int ExitCode => ProcessData.ExitStatus;
         public ProcessFlags Flags => ProcessData.Flags;

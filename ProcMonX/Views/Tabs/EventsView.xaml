@@ -21,7 +21,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <TextBox Width="400" HorizontalAlignment="Left" Margin="0,2" 
+        <TextBox Width="300" HorizontalAlignment="Left" Margin="0,2" 
             Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged, Delay=250}" metro:TextBoxHelper.Watermark="Type to filter"
             metro:TextBoxHelper.ClearTextButton="True" metro:TextBoxHelper.SelectAllOnFocus="True" z:FocusProperties.FocusOnLoad="True"/>
         

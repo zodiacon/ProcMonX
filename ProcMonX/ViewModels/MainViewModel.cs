@@ -34,6 +34,8 @@ namespace ProcMonX.ViewModels {
         CaptureViewModel _captureSettings;
         EventsViewModel _allEventsViewModel;
 
+        public Options Options { get; } = new Options();
+
         public IList<TabItemViewModelBase> Tabs => _tabs;
 
         public EventType[] EventTypes => _eventTypes;
@@ -97,6 +99,9 @@ namespace ProcMonX.ViewModels {
 
                 case FileIOReadWriteTraceData data:
                     return $"Filename:;; {data.FileName};; Offset:;; {data.Offset:X};; Size:;; 0x{data.IoSize:X};; IRP:;; 0x{data.IrpPtr:X}";
+
+                case FileIOSimpleOpTraceData data:
+                    return $"Filename:;; {data.FileName};; File Object:;; 0x{data.FileObject:X};; IRP:;; 0x{data.IrpPtr:X}";
 
                 case VirtualAllocTraceData data:
                     return $"Address:;; 0x{data.BaseAddr:X};; Size:;; 0x{data.Length:X};; Flags:;; {(VirtualAllocFlags)(data.Flags)}";
@@ -176,7 +181,7 @@ namespace ProcMonX.ViewModels {
                 if (tab != null)
                     _views.Add(tab.Text, tab);
             }
-        });
+        }, name => false);      // disable for now
 
         private TabItemViewModelBase CreateTab(string name) {
             TabItemViewModelBase tab = null;
@@ -218,7 +223,7 @@ namespace ProcMonX.ViewModels {
             _updateTimer.Start();
         }
 
-        public string Title => "Process Monitor X v0.1 (C)2018 by Pavel Yosifovich";
+        public string Title => $"{App.Title} v0.1 (C)2017-2018 by Pavel Yosifovich";
 
         public ICommand ExitCommand => new DelegateCommand(() => Application.Current.Shutdown());
 
@@ -231,10 +236,8 @@ namespace ProcMonX.ViewModels {
             set => SetProperty(ref _isBusy, value);
         }
 
-        private async void StopMonitoring() {
-            IsBusy = true;
-            await Task.Run(() => TraceManager.Stop());
-            IsBusy = false;
+        private void StopMonitoring() {
+            TraceManager.Stop();
             IsMonitoring = false;
             SuspendUpdates = false;
         }
@@ -272,6 +275,11 @@ namespace ProcMonX.ViewModels {
 
             SaveInternal(filename);
         }, () => !IsMonitoring).ObservesProperty(() => IsMonitoring);
+
+        public ICommand AlwaysOnTopCommand => new DelegateCommand<FrameworkElement>(element => {
+            var window = Window.GetWindow(element);
+            window.Topmost = Options.AlwaysOnTop;
+        });
 
         private void SaveInternal(string filename) {
             using (var writer = new StreamWriter(filename, append: false, encoding: Encoding.Unicode)) {

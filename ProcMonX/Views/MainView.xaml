@@ -23,8 +23,8 @@
 
         <Menu z:InputHelper.AttachInputBindings="True">
             <MenuItem Header="_File">
-                <MenuItem Header="_Open..." Command="{Binding OpenCommand}" Icon="{z:Image /icons/normal/open.ico, Width=20, Height=20}" />
-                <MenuItem Header="_Save..." Command="{Binding SaveCommand}" Icon="{z:Image /icons/normal/save.ico, Width=20, Height=20}" />
+                <MenuItem Header="_Open..." Command="{Binding OpenCommand}" Icon="{z:Image /icons/normal/open.ico, Width=20, Height=20}" InputGestureText="Ctrl+O" />
+                <MenuItem Header="_Save..." Command="{Binding SaveCommand}" Icon="{z:Image /icons/normal/save.ico, Width=20, Height=20}" InputGestureText="Ctrl+S" />
                 <Separator />
                 <MenuItem Header="E_xit" Command="{Binding ExitCommand}" />
             </MenuItem>
@@ -32,7 +32,7 @@
                 <MenuItem Header="_Copy" Command="Copy" Icon="{z:Image /icons/normal/copy.ico, Width=20, Height=20}" />
             </MenuItem>
             <MenuItem Header="_View">
-                <MenuItem Header="All _Events" Icon="{z:Image /icons/normal/event.ico, Width=20, Height=20}" Command="{Binding ViewTabCommand}" CommandParameter="AllEvents" />
+                <MenuItem Header="All _Events" Icon="{z:Image /icons/normal/event.ico, Width=20, Height=20}" Command="{Binding ViewTabCommand}" CommandParameter="All Events" />
                 <MenuItem Header="_Processes" Icon="{z:Image /icons/normal/processes.ico, Width=20, Height=20}" Command="{Binding ViewTabCommand}" CommandParameter="Processes" />
                 <MenuItem Header="_Threads" Icon="{z:Image /icons/normal/threads.ico, Width=20, Height=20}" Command="{Binding ViewTabCommand}" CommandParameter="Threads" />
                 <MenuItem Header="_Registry" Icon="{z:Image /icons/normal/registry.ico, Width=20, Height=20}" Command="{Binding ViewTabCommand}" CommandParameter="Registry" />
@@ -53,7 +53,7 @@
                 <MenuItem Header="Specific Processes..." Icon="{z:Image /icons/normal/processes.ico, Width=20, Height=20}" />
             </MenuItem>
             <MenuItem Header="_Options">
-                <MenuItem Header="_Always On Top" IsCheckable="True" IsChecked="{Binding Options.AlwaysOnTop, Mode=TwoWay}" 
+                <MenuItem Header="_Always On Top" IsChecked="{Binding Options.AlwaysOnTop}" IsCheckable="True"
                           Command="{Binding AlwaysOnTopCommand}" CommandParameter="{Binding ElementName=This}" />
                 <MenuItem Header="_Fonts..." />
                 <MenuItem Header="_Colors..." />
@@ -90,18 +90,23 @@
             </Button>
         </ToolBar>
 
-        <sf:TabControlExt Grid.Row="2" ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab, Mode=TwoWay}" CloseButtonType="Individual" 
-                          EnableLabelEdit="False" IsDisableUnloadTabItemExtContent="True"
-                          sf:SkinStorage.VisualStyle="Metro" sf:SkinStorage.MetroBrush="{DynamicResource AccentColorBrush}" TabItemSelectedBackground="{DynamicResource AccentColorBrush}"
+        <sf:TabControlExt Grid.Row="2" ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab, Mode=TwoWay}" CloseButtonType="Individual" TabVisualStyle="None"
+                          EnableLabelEdit="False" IsDisableUnloadTabItemExtContent="True" TabItemLayout="MultiLine" TabScrollStyle="Extended" sf:SkinStorage.OverrideVisualStyle="True" sf:SkinStorage.VisualStyle="Metro"
+                          sf:SkinStorage.MetroBrush="{DynamicResource AccentColorBrush}" TabItemSelectedBackground="{DynamicResource AccentColorBrush}" TabPanelBackground="{DynamicResource WhiteBrush}"
                           TabItemSelectedForeground="{DynamicResource WhiteBrush}" TabItemHoverBackground="{DynamicResource AccentColorBrush3}" TabItemHoverForeground="{DynamicResource WhiteBrush}"
                           >
             <i:Interaction.Behaviors>
                 <z:EventToCommand EventName="TabClosed" Command="{Binding TabClosedCommand}" />
                 <z:EventToCommand EventName="TabClosing" Command="{Binding TabClosingCommand}" />
             </i:Interaction.Behaviors>
+            <sf:TabControlExt.ItemContainerStyle>
+                <Style TargetType="{x:Type sf:TabItemExt}">
+                    <Setter Property="Background" Value="{DynamicResource WhiteBrush}" />
+                </Style>
+            </sf:TabControlExt.ItemContainerStyle>
             <sf:TabControlExt.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" >
                         <Image Source="{Binding Icon}" Width="16" Height="16" />
                         <TextBlock Text="{Binding Text}" Margin="4,0,0,0" VerticalAlignment="Center" />
                     </StackPanel>
