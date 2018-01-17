@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace ProcMonX.ViewModels {
     sealed class FilterRuleViewModel : BindableBase {
-        public readonly IFilterRule Rule;
-        FilterTypeViewModel _type;
+        public IFilterRule Rule { get; set; }
+        public readonly FilterTypeViewModel Type;
 
         public FilterRuleViewModel(FilterTypeViewModel type, IFilterRule rule) {
             Rule = rule;
-            _type = type;
+            Type = type;
             Details = FilterFactory.GetRuleDetails(rule);
         }
 
-        public string Name => _type.Name;
+        public string Name => Type.Name;
 
         public bool IsActive {
             get => Rule.IsActive;
@@ -36,6 +36,12 @@ namespace ProcMonX.ViewModels {
         }
 
         public string Icon { get; }
-        public string Details { get; }
+        public string Details { get => _details; set => SetProperty(ref _details, value); }
+
+        string _details;
+
+        public void Refresh() {
+            Details = FilterFactory.GetRuleDetails(Rule);
+        }
     }
 }

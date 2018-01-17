@@ -45,5 +45,6 @@ namespace ProcMonX.Tracing {
             Debug.Assert(false);
             return null;
         }
+
     }
 }

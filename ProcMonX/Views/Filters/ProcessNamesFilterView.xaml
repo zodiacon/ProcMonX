@@ -18,8 +18,8 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TextBlock Margin="2" Text="Enter process names separated by commas (case insensitive)" />
-        <TextBox Margin="2" Grid.Row="1" Text="{Binding Names, UpdateSourceTrigger=PropertyChanged, Delay=100}" metro:TextBoxHelper.Watermark="Type process names" metro:TextBoxHelper.ClearTextButton="True" 
-                 z:FocusProperties.FocusOnLoad="True" />
+        <TextBox Margin="2" Grid.Row="1" Text="{Binding Names, UpdateSourceTrigger=PropertyChanged}" metro:TextBoxHelper.Watermark="Type process names" 
+                 metro:TextBoxHelper.ClearTextButton="True" metro:TextBoxHelper.SelectAllOnFocus="True" z:FocusProperties.FocusOnLoad="True" />
         <CheckBox Grid.Row="2" Margin="2,8" Content="Include processes with these names (otherwise exclude)" IsChecked="{Binding Include}" />
         
         <c:OKCancel Grid.Row="4" HorizontalAlignment="Center" />

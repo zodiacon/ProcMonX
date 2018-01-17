@@ -1,4 +1,5 @@
-﻿using ProcMonX.Tracing.Filters;
+﻿using ProcMonX.Tracing;
+using ProcMonX.Tracing.Filters;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,10 +20,8 @@ namespace ProcMonX.ViewModels.Filters {
         public string Title => "Process Names Filter";
 
         public string Names { get => _names; set => SetProperty(ref _names, value); }
-        public bool Include { get => _include; set => SetProperty(ref _include, value); }
 
         string _names = string.Empty;
-        bool _include = true;
 
         protected override void OnOK() {
             ProcessNames = Names.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -31,6 +30,12 @@ namespace ProcMonX.ViewModels.Filters {
             Filter = rule;
 
             base.OnOK();
+        }
+
+        public override void Refresh() {
+            var realFilter = (ProcessNameFilter)Filter;
+            Names = string.Join(",", realFilter.Names);
+            Include = Filter.Include;
         }
     }
 }

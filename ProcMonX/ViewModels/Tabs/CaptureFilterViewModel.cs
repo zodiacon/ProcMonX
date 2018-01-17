@@ -1,5 +1,6 @@
 ﻿using Prism.Commands;
 using ProcMonX.Tracing;
+using ProcMonX.ViewModels.Filters;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -56,26 +57,47 @@ namespace ProcMonX.ViewModels.Tabs {
             }
         }
 
+        FilterRuleViewModel _selectedItem;
+
         public ICommand DeleteCommand => new DelegateCommand(() => {
             var items = SelectedItems.Cast<FilterRuleViewModel>().ToArray();
             foreach (var filter in items) {
                 _filter.FilterRules.Remove(filter.Rule);
                 _filters.Remove(filter);
             }
+            RaisePropertyChanged(nameof(SelectedItems));
         }, () => SelectedItems.Count > 0).ObservesProperty(() => SelectedItems);
 
         public ICommand EditCommand => new DelegateCommand(() => {
-            if (SelectedItems.Count != 1)
-                return;
+            var filterItem = SelectedItem;
 
-            // TODO: edit filter
-        }, () => SelectedItems.Count == 1).ObservesProperty(() => SelectedItems);
+            var vm = FilterFactory.CreateFilterDialog(filterItem.Type, UI.DialogService);
+            vm.Filter = filterItem.Rule;
+            vm.Include = filterItem.Include;
+            vm.Refresh();
+
+            if (vm.ShowDialog() == true) {
+                filterItem.Rule = vm.Filter;
+                filterItem.Include = vm.Include;
+                filterItem.Refresh();
+            }
+
+        }, () => SelectedItem != null).ObservesProperty(() => SelectedItem);
 
         public bool DefaultResult {
             get => _filter.DefaultResult == FilterRuleResult.Include;
             set {
                 _filter.DefaultResult = value ? FilterRuleResult.Include : FilterRuleResult.Exclude;
                 RaisePropertyChanged(nameof(DefaultResult));
+            }
+        }
+
+        public FilterRuleViewModel SelectedItem {
+            get => _selectedItem;
+            set {
+                if (SetProperty(ref _selectedItem, value)) {
+                    RaisePropertyChanged(nameof(SelectedItems));
+                }
             }
         }
     }

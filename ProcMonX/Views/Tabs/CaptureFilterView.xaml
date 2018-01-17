@@ -57,7 +57,8 @@
             </Button>
         </ToolBar>
 
-        <sf:SfDataGrid Grid.Row="2" ItemsSource="{Binding Filters}" Style="{StaticResource SfDataGridStyle}" SelectionMode="Extended" SelectedItems="{Binding SelectedItems}">
+        <sf:SfDataGrid Grid.Row="2" ItemsSource="{Binding Filters}" Style="{StaticResource SfDataGridStyle}" SelectionMode="Extended" 
+                       SelectedItems="{Binding SelectedItems, Mode=OneWayToSource}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
             <sf:SfDataGrid.Columns>
                 <sf:GridTextColumn MappingName="Name" HeaderText="Type" MinimumWidth="60" Width="100" />
                 <sf:GridCheckBoxColumn MappingName="IsActive" HeaderText="Active?" ColumnSizer="SizeToHeader" AllowEditing="True" />

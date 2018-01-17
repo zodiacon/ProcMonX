@@ -13,10 +13,15 @@ namespace ProcMonX.ViewModels.Filters {
             dialog.Owner = Application.Current.MainWindow;
         }
 
-        public IFilterRule Filter { get; protected set; }
+        public IFilterRule Filter { get; set; }
+
+        bool _include = true;
+        public bool Include { get => _include; set => SetProperty(ref _include, value); }
 
         public ResizeMode ResizeMode => ResizeMode.NoResize;
 
         public SizeToContent SizeToContent => SizeToContent.WidthAndHeight;
+
+        public virtual void Refresh() { }
     }
 }
