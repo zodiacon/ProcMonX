@@ -39,6 +39,7 @@ namespace ProcMonX.Models {
         public EventType EventType { get; private set; }
         public string AsString { get; private set; }
         public KernelTraceEventParser.Keywords Keyword { get; private set; }
+        public string Description { get; private set; }
 
         public EventCategory Category { get; private set; }
 
@@ -48,43 +49,50 @@ namespace ProcMonX.Models {
                     EventType = EventType.ProcessStart,
                     AsString = "Process Start",
                     Keyword = KernelTraceEventParser.Keywords.Process,
-                    Category = EventCategory.Processes
+                    Category = EventCategory.Processes,
+                    Description = "Process is created"
                 },
                 new EventInfo {
                     EventType = EventType.ProcessDCStart,
                     AsString = "Process DC Start",
                     Keyword = KernelTraceEventParser.Keywords.Process,
-                    Category = EventCategory.Processes
+                    Category = EventCategory.Processes,
+                    Description = "Existing set of processes on the system"
                 },
                 new EventInfo {
                     EventType = EventType.ProcessStop,
                     AsString = "Process Stop",
                     Keyword = KernelTraceEventParser.Keywords.Process,
-                    Category = EventCategory.Processes
+                    Category = EventCategory.Processes,
+                    Description = "Process is terminated (for whatever reason)"
                 },
                 new EventInfo {
                     EventType = EventType.ThreadStart,
                     AsString = "Thread Start",
                     Keyword = KernelTraceEventParser.Keywords.Thread,
-                    Category = EventCategory.Threads
+                    Category = EventCategory.Threads,
+                    Description = "Thread is created"
                 },
                 new EventInfo {
                     EventType = EventType.ThreadDCStart,
                     AsString = "Thread DC Start",
                     Keyword = KernelTraceEventParser.Keywords.Thread,
-                    Category = EventCategory.Threads
+                    Category = EventCategory.Threads,
+                    Description = "Existing threads on the system"
                 },
                 new EventInfo {
                     EventType = EventType.ThreadStop,
                     AsString = "Thread Stop",
                     Keyword = KernelTraceEventParser.Keywords.Thread,
-                    Category = EventCategory.Threads
+                    Category = EventCategory.Threads,
+                    Description = "Thread is terminated (for whatever reason)"
                 },
                 new EventInfo {
                     EventType = EventType.RegistryOpenKey,
                     AsString = "Registry Open",
                     Keyword = KernelTraceEventParser.Keywords.Registry,
-                    Category = EventCategory.Registry
+                    Category = EventCategory.Registry,
+                    Description = "Open registry key"
                 },
                 new EventInfo {
                     EventType = EventType.RegistryCreateKey,

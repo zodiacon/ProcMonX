@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="ProcMonX.Views.Tabs.CaptureFilterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:sf="http://schemas.syncfusion.com/wpf"
+             xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:z="http://zodiacon.wpf/2016"
+             xmlns:local="clr-namespace:ProcMonX.Views.Tabs"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" >
+    <UserControl.Resources>
+        <z:BindingProxy x:Key="Proxy" Data="{Binding}" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ToolBar>
+            <metro:DropDownButton ItemsSource="{Binding FilterTypes}" >
+                <metro:DropDownButton.ItemContainerStyle>
+                    <Style TargetType="MenuItem" BasedOn="{StaticResource MetroMenuItem}">
+                        <Setter Property="Command" Value="{Binding Data.NewFilterCommand, Source={StaticResource Proxy}}" />
+                        <Setter Property="CommandParameter" Value="{Binding}" />
+                    </Style>
+                </metro:DropDownButton.ItemContainerStyle>
+                <metro:DropDownButton.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/icons/normal/filter-add.ico" Width="20" Height="20" />
+                        <TextBlock Text="Add Filter" Margin="4,0,0,0" VerticalAlignment="Center" />
+                    </StackPanel>
+                </metro:DropDownButton.Content>
+                <metro:DropDownButton.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <!--<Image Source="{Binding Icon}" Width="20" Height="20" />-->
+                            <TextBlock Text="{Binding Name}" Margin="4,0,0,0" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </DataTemplate>
+                </metro:DropDownButton.ItemTemplate>
+            </metro:DropDownButton>
+            <Separator />
+            <Button Command="{Binding DeleteCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/icons/normal/filter-delete.ico" Width="20" Height="20" />
+                    <TextBlock Text="Delete" VerticalAlignment="Center" Margin="4,0,0,0" />
+                </StackPanel>    
+            </Button>
+            <Button Command="{Binding EditCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/icons/normal/filter-info.ico" Width="20" Height="20" />
+                    <TextBlock Text="Edit" VerticalAlignment="Center" Margin="4,0,0,0" />
+                </StackPanel>
+            </Button>
+        </ToolBar>
+
+        <sf:SfDataGrid Grid.Row="2" ItemsSource="{Binding Filters}" Style="{StaticResource SfDataGridStyle}" SelectionMode="Extended" SelectedItems="{Binding SelectedItems}">
+            <sf:SfDataGrid.Columns>
+                <sf:GridTextColumn MappingName="Name" HeaderText="Type" MinimumWidth="60" Width="100" />
+                <sf:GridCheckBoxColumn MappingName="IsActive" HeaderText="Active?" ColumnSizer="SizeToHeader" AllowEditing="True" />
+                <sf:GridCheckBoxColumn MappingName="Include" HeaderText="Include?" ColumnSizer="SizeToHeader" AllowEditing="True" />
+                <sf:GridTextColumn MappingName="Details" HeaderText="Details" MinimumWidth="100" Width="200" />
+            </sf:SfDataGrid.Columns>
+        </sf:SfDataGrid>
+
+        <CheckBox Grid.Row="3" Margin="2" Content="Include event if no filter hits" IsChecked="{Binding DefaultResult}" />
+    </Grid>
+</UserControl>

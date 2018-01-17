@@ -68,6 +68,7 @@
                 </sf:GridTemplateColumn>
                 <sf:GridTextColumn HeaderText="Category" MappingName="Category" MinimumWidth="100" />
                 <sf:GridCheckBoxColumn HeaderText="Monitor?" IsThreeState="False" MappingName="IsMonitoring" ColumnSizer="SizeToHeader" AllowEditing="{Binding IsNotMonitoring}" />
+                <sf:GridTextColumn HeaderText="Description" MappingName="Description" MinimumWidth="100" Width="250" AllowSorting="False" />
             </sf:SfDataGrid.Columns>
         </sf:SfDataGrid>
 

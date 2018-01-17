@@ -17,7 +17,6 @@ namespace ProcMonX.ViewModels.Tabs {
         EventTypeViewModel[] _eventTypes;
         PropertyFollower<MainViewModel, CaptureViewModel> _isMonitoringProperty;
         MainViewModel _mainViewModel;
-        public TraceFilter TraceFilter { get; } = new TraceFilter();
 
         public CaptureViewModel(MainViewModel vm) {
             _isMonitoringProperty = new PropertyFollower<MainViewModel, CaptureViewModel>(vm, this, nameof(IsMonitoring));

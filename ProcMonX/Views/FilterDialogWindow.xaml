@@ -1,0 +1,13 @@
+﻿<metro:MetroWindow x:Class="ProcMonX.Views.FilterDialogWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProcMonX.Views"
+        mc:Ignorable="d"
+        Title="{Binding Title}" Height="{Binding Height}" Width="{Binding Width}" ResizeMode="{Binding ResizeMode, FallbackValue=NoResize}"
+        Content="{Binding}" Icon="{Binding Icon}" MinWidth="{Binding MinWidth}" MinHeight="{Binding MinHeight}" TitleCaps="False"
+        SizeToContent="{Binding SizeToContent}"
+        BorderThickness="1" BorderBrush="{DynamicResource AccentColorBrush}">
+</metro:MetroWindow>

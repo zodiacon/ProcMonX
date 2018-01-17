@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Diagnostics.Tracing;
 
 namespace ProcMonX.Tracing.Filters {
+    [DebuggerDisplay("Active: {IsActive} Include: {Include} Names: {Names}")]
+    [Filter("Process Names")]
 	class ProcessNameFilter : IFilterRule {
 		public string[] Names { get; }
-		public bool Include { get; }
+		public bool Include { get; set; }
 
-		public ProcessNameFilter(bool include, params string[] names) {
+        public bool IsActive { get; set; } = true;
+
+        public ProcessNameFilter(bool include, params string[] names) {
 			Names = names.Select(n => n.ToLower()).ToArray();
 			Include = include;
 		}

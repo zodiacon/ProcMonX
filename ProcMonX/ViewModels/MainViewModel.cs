@@ -5,6 +5,7 @@ using Prism.Commands;
 using Prism.Mvvm;
 using ProcMonX.Models;
 using ProcMonX.Tracing;
+using ProcMonX.Tracing.Filters;
 using ProcMonX.ViewModels.Tabs;
 using Syncfusion.Windows.Tools.Controls;
 using System;
@@ -32,6 +33,7 @@ namespace ProcMonX.ViewModels {
         List<TraceEventDataViewModel> _tempEvents = new List<TraceEventDataViewModel>(8192);
         DispatcherTimer _updateTimer;
         CaptureViewModel _captureSettings;
+        CaptureFilterViewModel _filterSettings;
         EventsViewModel _allEventsViewModel;
 
         public Options Options { get; } = new Options();
@@ -54,6 +56,9 @@ namespace ProcMonX.ViewModels {
 
             _captureSettings = new CaptureViewModel(this);
             AddTab(_captureSettings, true);
+
+            _filterSettings = new CaptureFilterViewModel(this);
+            AddTab(_filterSettings);
 
             AddTab(_allEventsViewModel = new EventsViewModel(Events));
             _views.Add(_allEventsViewModel.Text, _allEventsViewModel);
@@ -184,7 +189,7 @@ namespace ProcMonX.ViewModels {
                 if (tab != null)
                     _views.Add(tab.Text, tab);
             }
-        }, name => false);      // disable for now
+        }, name => true);      
 
         private TabItemViewModelBase CreateTab(string name) {
             TabItemViewModelBase tab = null;
@@ -251,7 +256,7 @@ namespace ProcMonX.ViewModels {
                 UI.MessageBoxService.ShowMessage("No events selected to monitor", App.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return;
             }
-            if (SelectedTab == _captureSettings)
+            if (SelectedTab != _allEventsViewModel)
                 SelectedTab = _allEventsViewModel;
 
             TraceManager.Start(EventTypes);

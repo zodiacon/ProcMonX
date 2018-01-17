@@ -9,10 +9,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ProcMonX.ViewModels {
-    sealed class ProcessTraceEventViewModel : TraceEventDataViewModel {
+    public sealed class ProcessTraceEventViewModel {
         public readonly ProcessTraceData ProcessData;
-        internal ProcessTraceEventViewModel(TraceEventDataViewModel evt) : base(evt.Data, evt.Type, evt.Details) {
-            ProcessData = (ProcessTraceData)evt.Data;
+
+        internal ProcessTraceEventViewModel(TraceEvent evt) {
+            ProcessData = (ProcessTraceData)evt;
             Debug.Assert(ProcessData != null);
         }
 

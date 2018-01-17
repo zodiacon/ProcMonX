@@ -1,6 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:vm="clr-namespace:ProcMonX.ViewModels.Tabs"
+                    xmlns:vmfilter="clr-namespace:ProcMonX.ViewModels.Filters"
+                    xmlns:viewfilter="clr-namespace:ProcMonX.Views.Filters"
                     xmlns:view="clr-namespace:ProcMonX.Views.Tabs">
     <DataTemplate DataType="{x:Type vm:EventsViewModel}">
         <view:EventsView />
@@ -10,5 +12,12 @@
     </DataTemplate>
     <DataTemplate DataType="{x:Type vm:ProcessesViewModel}">
         <view:ProcessesView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:CaptureFilterViewModel}">
+        <view:CaptureFilterView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vmfilter:ProcessNamesFilterViewModel}">
+        <viewfilter:ProcessNamesFilterView />
     </DataTemplate>
 </ResourceDictionary>

@@ -59,7 +59,7 @@ namespace ProcMonX.Tracing {
 
         }
 
-        public TraceFilter Filter { get; set; }
+        public TraceEventFilter Filter { get; set; }
 
         public void Stop() {
             _kernelSession.Flush();

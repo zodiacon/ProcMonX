@@ -43,13 +43,13 @@
                 <sf:GridTextColumn HeaderText="Process Name" ValueBinding="{Binding ProcessName, Mode=OneTime}" MinimumWidth="80" Width="120" ColumnSizer="SizeToCells" />
                 <sf:GridTextColumn HeaderText="TID" ValueBinding="{Binding ThreadId, Mode=OneTime}" MinimumWidth="50" TextAlignment="Center" MappingName="ThreadId"/>
                 <sf:GridTextColumn HeaderText="CPU" ValueBinding="{Binding Processor, Mode=OneTime}" ColumnSizer="SizeToHeader" AllowResizing="False" TextAlignment="Center" />
-                <sf:GridTextColumn HeaderText="Session" MappingName="SessionId" ColumnSizer="SizeToHeader" />
+                <sf:GridTextColumn HeaderText="Session" MappingName="Session" ValueBinding="{Binding AsProcess.Session, Mode=OneTime}" ColumnSizer="SizeToHeader" />
                 <sf:GridTextColumn HeaderText="Opcode" ValueBinding="{Binding Opcode, Mode=OneTime}" MinimumWidth="70" />
-                <sf:GridTextColumn HeaderText="Parent PID" MappingName="ParentId" MinimumWidth="50" />
-                <sf:GridTextColumn HeaderText="Exit Code" MappingName="ExitCode" MinimumWidth="50" />
-                <sf:GridTextColumn HeaderText="Flags" MappingName="Flags" MinimumWidth="50" />
-                <sf:GridTextColumn HeaderText="Command Line" MappingName="CommandLine" MinimumWidth="150" />
-                <sf:GridTextColumn HeaderText="Package Full Name" MappingName="PackageFullName" MinimumWidth="150" />
+                <sf:GridTextColumn HeaderText="Parent PID" MappingName="ParentId" ValueBinding="{Binding AsProcess.ParentId, Mode=OneTime}" MinimumWidth="70" TextAlignment="Center" />
+                <sf:GridTextColumn HeaderText="Exit Code" MappingName="ExitCode" ValueBinding="{Binding AsProcess.ExitCode}" MinimumWidth="50" TextAlignment="Right" />
+                <sf:GridTextColumn HeaderText="Flags" MappingName="Flags" MinimumWidth="50" ValueBinding="{Binding AsProcess.Flags}"  />
+                <sf:GridTextColumn HeaderText="Command Line" MappingName="CommandLine" MinimumWidth="150" ValueBinding="{Binding AsProcess.CommandLine}" />
+                <sf:GridTextColumn HeaderText="Package Full Name" MappingName="PackageFullName" MinimumWidth="150" ValueBinding="{Binding AsProcess.PackageFullName}"  />
             </sf:SfDataGrid.Columns>
         </sf:SfDataGrid>
     </Grid>
