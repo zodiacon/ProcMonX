@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Zodiacon.WPF;
 
-namespace ProcMonX.ViewModels.Filters {
+namespace ProcMonX.ViewModels {
     abstract class FilterDialogViewModelBase : DialogViewModelBase {
         protected FilterDialogViewModelBase(Window dialog) : base(dialog) {
             dialog.Owner = Application.Current.MainWindow;

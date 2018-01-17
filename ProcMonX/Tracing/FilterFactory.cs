@@ -36,14 +36,11 @@ namespace ProcMonX.Tracing {
         }
 
         public static FilterDialogViewModelBase CreateFilterDialog(FilterTypeViewModel type, IDialogService dialogService) {
-            switch (type.Type.Name) {
-                case nameof(ProcessNameFilter):
-                    var vm = dialogService.CreateDialog<ProcessNamesFilterViewModel, FilterDialogWindow>();
-                    return vm;
-            }
-
-            Debug.Assert(false);
-            return null;
+            var creator = dialogService.GetType();
+            var method = creator.GetMethod("CreateDialog", new Type[] { typeof(object[]) });
+            var createMethod = method.MakeGenericMethod(type.Type.GetCustomAttribute<FilterAttribute>().ViewModelType, typeof(FilterDialogWindow));
+            var vm = (FilterDialogViewModelBase) createMethod.Invoke(dialogService, new object[1] { new object[0] });
+            return vm;
         }
 
     }

@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProcMonX.ViewModels {
+namespace ProcMonX.ViewModels.EventCategories {
     public sealed class ProcessTraceEventViewModel {
         public readonly ProcessTraceData ProcessData;
 

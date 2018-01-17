@@ -39,8 +39,6 @@ namespace ProcMonX.ViewModels.Tabs {
         }
 
         public ICommand NewFilterCommand => new DelegateCommand<FilterTypeViewModel>(type => {
-            Debug.Assert(type != null);
-
             var vm = FilterFactory.CreateFilterDialog(type, UI.DialogService);
             if (vm.ShowDialog() == true) {
                 _filters.Add(new FilterRuleViewModel(type, vm.Filter));

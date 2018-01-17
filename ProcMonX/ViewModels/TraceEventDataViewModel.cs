@@ -1,5 +1,6 @@
 ﻿using Microsoft.Diagnostics.Tracing;
 using ProcMonX.Models;
+using ProcMonX.ViewModels.EventCategories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,6 @@ namespace ProcMonX.ViewModels {
         public int Processor => Data.ProcessorNumber;
 
         public string Details { get; }
-
 
         ProcessTraceEventViewModel _asProcess;
         public ProcessTraceEventViewModel AsProcess => _asProcess ?? (_asProcess = new ProcessTraceEventViewModel(Data));

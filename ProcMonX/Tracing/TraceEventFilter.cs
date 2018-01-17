@@ -35,6 +35,7 @@ namespace ProcMonX.Tracing {
         }
 
         public string Description { get; set; }
+        public Type ViewModelType { get; set; }
     }
 
     class TraceEventFilter {

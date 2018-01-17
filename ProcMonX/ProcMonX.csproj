@@ -111,11 +111,11 @@
     <Compile Include="Tracing\TraceManager.cs" />
     <Compile Include="ViewModels\EventTypeViewModel.cs" />
     <Compile Include="ViewModels\FilterRuleViewModel.cs" />
-    <Compile Include="ViewModels\Filters\FilterDialogViewModelBase.cs" />
+    <Compile Include="ViewModels\FilterDialogViewModelBase.cs" />
     <Compile Include="ViewModels\Filters\ProcessNamesFilterViewModel.cs" />
     <Compile Include="ViewModels\FilterTypeViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\ProcessTraceEventViewModel.cs" />
+    <Compile Include="ViewModels\EventCategories\ProcessTraceEventViewModel.cs" />
     <Compile Include="ViewModels\TabItemViewModelBase.cs" />
     <Compile Include="ViewModels\Tabs\CaptureFilterViewModel.cs" />
     <Compile Include="ViewModels\Tabs\CaptureViewModel.cs" />
