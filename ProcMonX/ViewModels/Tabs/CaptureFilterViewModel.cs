@@ -40,6 +40,10 @@ namespace ProcMonX.ViewModels.Tabs {
 
         public ICommand NewFilterCommand => new DelegateCommand<FilterTypeViewModel>(type => {
             var vm = FilterFactory.CreateFilterDialog(type, UI.DialogService);
+            if (vm == null) {
+                UI.MessageBoxService.ShowMessage("Filter type UI not yet implemented", App.Title);
+                return;
+            }
             if (vm.ShowDialog() == true) {
                 _filters.Add(new FilterRuleViewModel(type, vm.Filter));
                 _filter.FilterRules.Add(vm.Filter);

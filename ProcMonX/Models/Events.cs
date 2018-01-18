@@ -14,11 +14,12 @@ namespace ProcMonX.Models {
         RegistryOpenKey = 400, RegistryQueryValue, RegistrySetValue, RegistryCreateKey,
         RegistryCloseKey, RegistryEnumerateKey, RegistryEnumerateValues, RegistryFlush,
         RegistryDeleteKey, RegistryDeleteValue, RegistryQueryMultipleValues,
-        AlpcSendMessage = 500, AlpcReceiveMessage,
+        AlpcSendMessage = 500, AlpcReceiveMessage, AlpcWaitForReply, ALPCWaitForNewMessage,
         ModuleLoad = 600, ModuleUnload, ModuleDCLoad, ModuleDCUnload,
-        FileRead = 700, FileWrite, FileCreate, FileRename, FileDelete, FileQueryInfo,
-        DiskRead = 800, DiskWrite,
-        TcpIpReceive = 900, TcpIpSend, TcpIpConnect, TcpIpDisconnect, TcpIpAccept
+        FileRead = 700, FileWrite, FileCreate, FileRename, FileDelete, FileQueryInfo, FileClose, FileFlush,
+            FileMapDCStart, FileMapDCStop, FileMap, FileUnmap,
+        DiskRead = 800, DiskWrite, DriverMajorFunctionCall, DriverMajorFunctionReturn, DriverCompletionRoutine,
+        TcpIpReceive = 900, TcpIpSend, TcpIpConnect, TcpIpDisconnect, TcpIpAccept,
     }
 
     public enum EventCategory {
@@ -32,7 +33,7 @@ namespace ProcMonX.Models {
         Network,
         Driver,
         Memory,
-        Disk
+        Disk,
     }
 
     class EventInfo {
@@ -203,6 +204,18 @@ namespace ProcMonX.Models {
                     Category = EventCategory.Files
                 },
                 new EventInfo {
+                    EventType = EventType.FileClose,
+                    AsString = "File Close",
+                    Keyword = KernelTraceEventParser.Keywords.FileIO | KernelTraceEventParser.Keywords.FileIOInit,
+                    Category = EventCategory.Files
+                },
+                new EventInfo {
+                    EventType = EventType.FileFlush,
+                    AsString = "File Flush",
+                    Keyword = KernelTraceEventParser.Keywords.FileIO | KernelTraceEventParser.Keywords.FileIOInit,
+                    Category = EventCategory.Files
+                },
+                new EventInfo {
                     EventType = EventType.FileDelete,
                     AsString = "File Delete",
                     Keyword = KernelTraceEventParser.Keywords.FileIO | KernelTraceEventParser.Keywords.FileIOInit,
@@ -268,7 +281,37 @@ namespace ProcMonX.Models {
                     Keyword = KernelTraceEventParser.Keywords.NetworkTCPIP,
                     Category = EventCategory.Network
                 },
-            };
+                new EventInfo {
+                    EventType = EventType.FileMapDCStart,
+                    AsString = "File Mapping DC Start",
+                    Keyword = KernelTraceEventParser.Keywords.VAMap,
+                    Category = EventCategory.Files
+                },
+                new EventInfo {
+                    EventType = EventType.FileMap,
+                    AsString = "File Mapped",
+                    Keyword = KernelTraceEventParser.Keywords.VAMap,
+                    Category = EventCategory.Files
+                },
+                new EventInfo {
+                    EventType = EventType.FileMapDCStop,
+                    AsString = "File Mapping DC Stop",
+                    Keyword = KernelTraceEventParser.Keywords.VAMap,
+                    Category = EventCategory.Files
+                },
+                new EventInfo {
+                    EventType = EventType.FileUnmap,
+                    AsString = "File Unmapped",
+                    Keyword = KernelTraceEventParser.Keywords.VAMap,
+                    Category = EventCategory.Files
+                },
+                new EventInfo {
+                    EventType = EventType.DriverMajorFunctionCall,
+                    AsString = "Driver Major Function Call",
+                    Keyword = KernelTraceEventParser.Keywords.Driver,
+                    Category = EventCategory.Driver
+                },
+            }.OrderBy(evt => evt.AsString).ToList();
 
         public static readonly IDictionary<EventType, EventInfo> AllEventsByType = AllEvents.ToDictionary(evt => evt.EventType);
         public static readonly IEnumerable<IGrouping<EventCategory, EventInfo>> AllEventsByCategory = AllEvents.GroupBy(evt => evt.Category).OrderBy(g => g.Key.ToString()).ToList();

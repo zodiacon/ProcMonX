@@ -134,6 +134,15 @@ namespace ProcMonX.ViewModels {
                 case DiskIOTraceData data:
                     return $"Disk:;; {data.DiskNumber};; Offset:;; {data.ByteOffset};; Size:;; {data.TransferSize};; Priority:;; {data.Priority};; IRP:;;" + 
                         $" 0x{data.Irp:X};; IRP Flags:;; {data.IrpFlags};; File Key:;; 0x{data.FileKey:X};; Filename:;; {data.FileName}";
+
+                case MapFileTraceData data:
+                    return $"Filename:;; {data.FileName};; View Base:;; 0x{data.ViewBase:X};; Offset:;; 0x{data.ByteOffset:X};; Size:;; 0x{data.ViewSize:X}";
+
+                case FileIONameTraceData data:
+                    return $"Filename:;; {data.FileName};; File Key:;; 0x{data.FileKey:X}";
+
+                case DriverMajorFunctionCallTraceData data:
+                    return $"Major:;; {data.MajorFunction};; Minor:;; {data.MinorFunction};; IRP:;; 0x{data.Irp:X};; Routine:;; 0x{data.RoutineAddr:X};; Unique ID:;; 0x{data.UniqMatchID:X}";
             }
             return string.Empty;
         }
@@ -222,6 +231,7 @@ namespace ProcMonX.ViewModels {
 
         void Update() {
             _updateTimer.Stop();
+            var sw = Stopwatch.StartNew();
             if (!SuspendUpdates) {
                 lock (_tempEvents) {
                     int count = Math.Min(_tempEvents.Count, IsMonitoring ? 3072 : 8192);
@@ -230,6 +240,10 @@ namespace ProcMonX.ViewModels {
                     _tempEvents.RemoveRange(0, count);
                     IsBusy = _tempEvents.Count > 0;
                 }
+            }
+            sw.Stop();
+            if (sw.ElapsedMilliseconds > 800) {
+                SuspendUpdates = true;
             }
             RaisePropertyChanged(nameof(LostEvents));
             RaisePropertyChanged(nameof(EventCount));

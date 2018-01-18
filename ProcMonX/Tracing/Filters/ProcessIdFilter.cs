@@ -9,7 +9,7 @@ using Microsoft.Diagnostics.Tracing;
 namespace ProcMonX.Tracing.Filters {
     [DebuggerDisplay("Active: {IsActive} Include: {Include} Names: {Pids}")]
     [Filter("Process IDs")]
-    class ProcessIdFilter : IFilterRule {
+    sealed class ProcessIdFilter : IFilterRule {
 		public int[] Pids { get; }
 		public bool Include { get; set; }
 

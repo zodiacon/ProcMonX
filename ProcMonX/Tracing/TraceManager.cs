@@ -38,9 +38,8 @@ namespace ProcMonX.Tracing {
 
             _kernelSession = new TraceEventSession(KernelTraceEventParser.KernelSessionName) {
                 BufferSizeMB = 128,
-                CpuSampleIntervalMSec = 10
+                CpuSampleIntervalMSec = 10,
             };
-
             var keywords = KernelTraceEventParser.Keywords.None;
             foreach (var type in types)
                 keywords |= EventInfo.AllEventsByType[type].Keyword;
@@ -169,6 +168,14 @@ namespace ProcMonX.Tracing {
                     _kernelParser.FileIOCreate += obj => HandleEvent(obj, EventType.FileCreate);
                     break;
 
+                case EventType.FileClose:
+                    _kernelParser.FileIOClose += obj => HandleEvent(obj, EventType.FileClose);
+                    break;
+
+                case EventType.FileFlush:
+                    _kernelParser.FileIOFlush += obj => HandleEvent(obj, EventType.FileFlush);
+                    break;
+
                 case EventType.FileDelete:
                     _kernelParser.FileIOFileDelete += obj => HandleEvent(obj, EventType.FileDelete);
                     break;
@@ -212,6 +219,26 @@ namespace ProcMonX.Tracing {
                 case EventType.TcpIpReceive:
                     _kernelParser.TcpIpRecv += obj => HandleEvent(obj, EventType.TcpIpReceive);
                     _kernelParser.TcpIpRecvIPV6 += obj => HandleEvent(obj, EventType.TcpIpReceive);
+                    break;
+
+                case EventType.FileMapDCStart:
+                    _kernelParser.FileIOMapFileDCStart += obj => HandleEvent(obj, EventType.FileMapDCStart);
+                    break;
+
+                case EventType.FileMapDCStop:
+                    _kernelParser.FileIOMapFileDCStop+= obj => HandleEvent(obj, EventType.FileMapDCStop);
+                    break;
+
+                case EventType.FileMap:
+                    _kernelParser.FileIOMapFile += obj => HandleEvent(obj, EventType.FileMap);
+                    break;
+
+                case EventType.FileUnmap:
+                    _kernelParser.FileIOUnmapFile += obj => HandleEvent(obj, EventType.FileUnmap);
+                    break;
+
+                case EventType.DriverMajorFunctionCall:
+                    _kernelParser.DiskIODriverMajorFunctionCall += obj => HandleEvent(obj, EventType.DriverMajorFunctionCall);
                     break;
             }
         }
