@@ -29,6 +29,7 @@ namespace ProcMonX.ViewModels {
 
         internal virtual bool CanClose => true;
 
-        public virtual void Refresh() { }
+        public virtual void OnActivate(bool activate) { }
+        public virtual void OnClose() { }
     }
 }

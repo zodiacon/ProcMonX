@@ -24,7 +24,7 @@
             Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged, Delay=250}" metro:TextBoxHelper.Watermark="Type to filter"
             metro:TextBoxHelper.ClearTextButton="True" metro:TextBoxHelper.SelectAllOnFocus="True" z:FocusProperties.FocusOnLoad="True"/>
 
-        <sf:SfDataGrid Grid.Row="1" ItemsSource="{Binding Events}" Style="{StaticResource SfDataGridStyle}" SelectionMode="Extended" IsReadOnly="True" AllowGrouping="True" 
+        <sf:SfDataGrid Grid.Row="1" ItemsSource="{Binding ProcessEvents}" Style="{StaticResource SfDataGridStyle}" SelectionMode="Extended" IsReadOnly="True" AllowGrouping="True" 
                        ShowGroupDropArea="True" ColumnSizer="SizeToCells" BindableView="{Binding View, Mode=OneWayToSource}">
             <sf:SfDataGrid.Columns>
                 <sf:GridTextColumn HeaderText="Index" MappingName="Index" MinimumWidth="50" TextAlignment="Right" />
@@ -40,16 +40,16 @@
                 </sf:GridTemplateColumn>
                 <sf:GridTextColumn HeaderText="Time" ValueBinding="{Binding TimeStamp, StringFormat=\{0:HH:mm:ss.ffff\}, Mode=OneTime}" />
                 <sf:GridTextColumn HeaderText="PID" ValueBinding="{Binding ProcessId, Mode=OneTime}" MinimumWidth="50" TextAlignment="Center" />
-                <sf:GridTextColumn HeaderText="Process Name" ValueBinding="{Binding ProcessName, Mode=OneTime}" MinimumWidth="80" Width="120" ColumnSizer="SizeToCells" />
-                <sf:GridTextColumn HeaderText="TID" ValueBinding="{Binding ThreadId, Mode=OneTime}" MinimumWidth="50" TextAlignment="Center" MappingName="ThreadId"/>
+                <sf:GridTextColumn HeaderText="Process Name" MappingName="ProcessName" MinimumWidth="80" Width="120" ColumnSizer="SizeToCells" />
                 <sf:GridTextColumn HeaderText="CPU" ValueBinding="{Binding Processor, Mode=OneTime}" ColumnSizer="SizeToHeader" AllowResizing="False" TextAlignment="Center" />
-                <sf:GridTextColumn HeaderText="Session" MappingName="Session" ValueBinding="{Binding AsProcess.Session, Mode=OneTime}" ColumnSizer="SizeToHeader" />
+                <sf:GridTextColumn HeaderText="Session" MappingName="Session" ValueBinding="{Binding Session, Mode=OneTime}" ColumnSizer="SizeToHeader" TextAlignment="Center" />
                 <sf:GridTextColumn HeaderText="Opcode" ValueBinding="{Binding Opcode, Mode=OneTime}" MinimumWidth="70" />
-                <sf:GridTextColumn HeaderText="Parent PID" MappingName="ParentId" ValueBinding="{Binding AsProcess.ParentId, Mode=OneTime}" MinimumWidth="70" TextAlignment="Center" />
-                <sf:GridTextColumn HeaderText="Exit Code" MappingName="ExitCode" ValueBinding="{Binding AsProcess.ExitCode}" MinimumWidth="50" TextAlignment="Right" />
-                <sf:GridTextColumn HeaderText="Flags" MappingName="Flags" MinimumWidth="50" ValueBinding="{Binding AsProcess.Flags}"  />
-                <sf:GridTextColumn HeaderText="Command Line" MappingName="CommandLine" MinimumWidth="150" ValueBinding="{Binding AsProcess.CommandLine}" />
-                <sf:GridTextColumn HeaderText="Package Full Name" MappingName="PackageFullName" MinimumWidth="150" ValueBinding="{Binding AsProcess.PackageFullName}"  />
+                <sf:GridTextColumn HeaderText="Parent PID" MappingName="ParentId" ValueBinding="{Binding ParentId, Mode=OneTime}" MinimumWidth="70" TextAlignment="Center" />
+                <sf:GridTextColumn HeaderText="Exit Code" MappingName="ExitCode" ValueBinding="{Binding ExitCode}" MinimumWidth="80" TextAlignment="Right" />
+                <sf:GridTextColumn HeaderText="Flags" MappingName="Flags" MinimumWidth="60" />
+                <sf:GridTextColumn HeaderText="Command Line" MappingName="CommandLine" MinimumWidth="150" Width="200" />
+                <sf:GridTextColumn HeaderText="Package Full Name" MappingName="PackageFullName" MinimumWidth="150" />
+                <sf:GridTextColumn HeaderText="App ID" MappingName="AppId" MinimumWidth="100" />
             </sf:SfDataGrid.Columns>
         </sf:SfDataGrid>
     </Grid>

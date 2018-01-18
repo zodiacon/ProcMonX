@@ -27,9 +27,6 @@ namespace ProcMonX.ViewModels {
 
         public string Details { get; }
 
-        ProcessTraceEventViewModel _asProcess;
-        public ProcessTraceEventViewModel AsProcess => _asProcess ?? (_asProcess = new ProcessTraceEventViewModel(Data));
-
         internal TraceEventDataViewModel(TraceEvent evt, EventType type, string details = null) {
             Data = evt;
             Type = type;

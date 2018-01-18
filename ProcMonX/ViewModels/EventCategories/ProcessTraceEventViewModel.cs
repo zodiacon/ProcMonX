@@ -9,11 +9,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ProcMonX.ViewModels.EventCategories {
-    public sealed class ProcessTraceEventViewModel {
+    public sealed class ProcessTraceEventViewModel : TraceEventDataViewModel{
         public readonly ProcessTraceData ProcessData;
 
-        internal ProcessTraceEventViewModel(TraceEvent evt) {
-            ProcessData = (ProcessTraceData)evt;
+        internal ProcessTraceEventViewModel(TraceEventDataViewModel root) : base(root.Data, root.Type) {
+            ProcessData = (ProcessTraceData)root.Data;
             Debug.Assert(ProcessData != null);
         }
 
@@ -26,5 +26,6 @@ namespace ProcMonX.ViewModels.EventCategories {
         public int ExitCode => ProcessData.ExitStatus;
         public ProcessFlags Flags => ProcessData.Flags;
         public string AppId => ProcessData.ApplicationID;
+
     }
 }

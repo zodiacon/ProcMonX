@@ -167,7 +167,13 @@ namespace ProcMonX.ViewModels {
 
         public TabItemViewModelBase SelectedTab {
             get => _selectedTab; 
-            set => SetProperty(ref _selectedTab, value); 
+            set {
+                var current = _selectedTab;
+                if (SetProperty(ref _selectedTab, value)) {
+                    current?.OnActivate(false);
+                    value?.OnActivate(true);
+                }
+            }
         }
 
         public TabItemViewModelBase AddTab(TabItemViewModelBase item, bool activate = false) {
@@ -189,13 +195,13 @@ namespace ProcMonX.ViewModels {
                 if (tab != null)
                     _views.Add(tab.Text, tab);
             }
-        }, name => true);      
+        }, name => !IsMonitoring).ObservesProperty(() => IsMonitoring);      
 
         private TabItemViewModelBase CreateTab(string name) {
             TabItemViewModelBase tab = null;
             switch (name) {
                 case "Processes":
-                    tab = new ProcessesViewModel(Events);
+                    tab = new ProcessesViewModel(this, Events);
                     break;
             }
 
@@ -256,14 +262,11 @@ namespace ProcMonX.ViewModels {
                 UI.MessageBoxService.ShowMessage("No events selected to monitor", App.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return;
             }
-            if (SelectedTab != _allEventsViewModel)
-                SelectedTab = _allEventsViewModel;
+
+            SelectedTab = _allEventsViewModel;
 
             TraceManager.Start(EventTypes);
             IsMonitoring = true;
-
-            foreach (var tab in _views.Values)
-                tab.Refresh();
         }
 
         public int LostEvents => TraceManager.LostEvents;
@@ -274,7 +277,11 @@ namespace ProcMonX.ViewModels {
                 args.Cancel = true;
         });
 
-        public ICommand TabClosedCommand => new DelegateCommand<CloseTabEventArgs>(args => _views.Remove((args.TargetTabItem.DataContext as TabItemViewModelBase).Text));
+        public ICommand TabClosedCommand => new DelegateCommand<CloseTabEventArgs>(args => {
+            var tab = args.TargetTabItem.DataContext as TabItemViewModelBase;
+            tab.OnClose();
+            _views.Remove(tab.Text);
+        });
 
         public ICommand SaveCommand => new DelegateCommand(() => {
             var filename = UI.FileDialogService.GetFileForSave("CSV Files (*.csv)|*.csv", "Select File");
