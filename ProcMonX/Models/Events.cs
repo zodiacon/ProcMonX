@@ -10,7 +10,7 @@ namespace ProcMonX.Models {
         None,
         ProcessStart = 100, ProcessStop, ProcessDCStart, ProcessDCStop,
         ThreadStart = 200, ThreadStop, ThreadDCStart, ThreadDCStop,
-        MemoryAlloc = 300, MemoryFree,
+        MemoryAlloc = 300, MemoryFree, HeapRangeCreate, HeapRangeDestory, HeapRangeReserve,
         RegistryOpenKey = 400, RegistryQueryValue, RegistrySetValue, RegistryCreateKey,
         RegistryCloseKey, RegistryEnumerateKey, RegistryEnumerateValues, RegistryFlush,
         RegistryDeleteKey, RegistryDeleteValue, RegistryQueryMultipleValues,
@@ -186,6 +186,18 @@ namespace ProcMonX.Models {
                     Category = EventCategory.ALPC
                 },
                 new EventInfo {
+                    EventType = EventType.ALPCWaitForNewMessage,
+                    AsString = "ALPC Wait for New Message",
+                    Keyword = KernelTraceEventParser.Keywords.AdvancedLocalProcedureCalls,
+                    Category = EventCategory.ALPC
+                },
+                new EventInfo {
+                    EventType = EventType.AlpcWaitForReply,
+                    AsString = "ALPC Wait for Reply",
+                    Keyword = KernelTraceEventParser.Keywords.AdvancedLocalProcedureCalls,
+                    Category = EventCategory.ALPC
+                },
+                new EventInfo {
                     EventType = EventType.FileRead,
                     AsString = "File Read",
                     Keyword = KernelTraceEventParser.Keywords.FileIO | KernelTraceEventParser.Keywords.FileIOInit,
@@ -305,12 +317,12 @@ namespace ProcMonX.Models {
                     Keyword = KernelTraceEventParser.Keywords.VAMap,
                     Category = EventCategory.Files
                 },
-                new EventInfo {
-                    EventType = EventType.DriverMajorFunctionCall,
-                    AsString = "Driver Major Function Call",
-                    Keyword = KernelTraceEventParser.Keywords.Driver,
-                    Category = EventCategory.Driver
-                },
+                //new EventInfo {
+                //    EventType = EventType.DriverMajorFunctionCall,
+                //    AsString = "Driver Major Function Call",
+                //    Keyword = KernelTraceEventParser.Keywords.Driver,
+                //    Category = EventCategory.Driver
+                //},
             }.OrderBy(evt => evt.AsString).ToList();
 
         public static readonly IDictionary<EventType, EventInfo> AllEventsByType = AllEvents.ToDictionary(evt => evt.EventType);

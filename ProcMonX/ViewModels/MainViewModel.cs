@@ -102,6 +102,12 @@ namespace ProcMonX.ViewModels {
                 case ALPCReceiveMessageTraceData alpc:
                     return $"Message ID: {alpc.MessageID}";
 
+                case ALPCWaitForReplyTraceData data:
+                    return $"Message ID:;; {data.MessageID}";
+
+                case ALPCWaitForNewMessageTraceData data:
+                    return $"Server:;; {Convert.ToBoolean(data.IsServerPort)};; Port Name:;; {data.PortName}";
+
                 case FileIOReadWriteTraceData data:
                     return $"Filename:;; {data.FileName};; Offset:;; {data.Offset:X};; Size:;; 0x{data.IoSize:X};; IRP:;; 0x{data.IrpPtr:X}";
 
@@ -251,7 +257,7 @@ namespace ProcMonX.ViewModels {
             _updateTimer.Start();
         }
 
-        public string Title => $"{App.Title} v0.1 (C)2017-2018 by Pavel Yosifovich";
+        public string Title => $"{App.Title} v0.2 Beta (C)2017-2018 by Pavel Yosifovich";
 
         public ICommand ExitCommand => new DelegateCommand(() => Application.Current.Shutdown());
 

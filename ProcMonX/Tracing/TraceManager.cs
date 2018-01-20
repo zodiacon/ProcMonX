@@ -152,6 +152,14 @@ namespace ProcMonX.Tracing {
                     _kernelParser.ALPCReceiveMessage += obj => HandleEvent(obj, EventType.AlpcReceiveMessage);
                     break;
 
+                case EventType.ALPCWaitForNewMessage:
+                    _kernelParser.ALPCWaitForNewMessage += obj => HandleEvent(obj, EventType.ALPCWaitForNewMessage);
+                    break;
+
+                case EventType.AlpcWaitForReply:
+                    _kernelParser.ALPCWaitForReply += obj => HandleEvent(obj, EventType.AlpcWaitForReply);
+                    break;
+
                 case EventType.FileRead:
                     _kernelParser.FileIORead += obj => HandleEvent(obj, EventType.FileRead);
                     break;

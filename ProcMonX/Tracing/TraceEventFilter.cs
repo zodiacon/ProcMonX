@@ -41,7 +41,7 @@ namespace ProcMonX.Tracing {
     class TraceEventFilter {
         ObservableCollection<IFilterRule> _filterRules = new ObservableCollection<IFilterRule>();
 
-        public FilterRuleResult DefaultResult { get; set; } = FilterRuleResult.Include;
+        public FilterRuleResult DefaultResult { get; set; } = FilterRuleResult.Exclude;
 
         public IList<IFilterRule> FilterRules => _filterRules;
 

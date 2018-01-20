@@ -141,6 +141,7 @@
     <Compile Include="ViewModels\EventTypeViewModel.cs" />
     <Compile Include="ViewModels\FilterRuleViewModel.cs" />
     <Compile Include="ViewModels\FilterDialogViewModelBase.cs" />
+    <Compile Include="ViewModels\Filters\ProcessIdsFilterViewModel.cs" />
     <Compile Include="ViewModels\Filters\ProcessNamesFilterViewModel.cs" />
     <Compile Include="ViewModels\FilterTypeViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -405,6 +406,12 @@
   <ItemGroup>
     <Resource Include="Icons\Events\DriverMajorFunctionCall.ico" />
     <Resource Include="Icons\Events\hardware-ok.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Events\AlpcWaitForReply.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Events\AlpcWaitForNewMessage.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
