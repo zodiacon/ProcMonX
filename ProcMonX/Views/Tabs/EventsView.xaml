@@ -26,9 +26,9 @@
             metro:TextBoxHelper.ClearTextButton="True" metro:TextBoxHelper.SelectAllOnFocus="True" z:FocusProperties.FocusOnLoad="True"/>
         
         <sf:SfDataGrid Grid.Row="1" ItemsSource="{Binding Events}" Style="{StaticResource SfDataGridStyle}" SelectionMode="Extended" IsReadOnly="True" AllowGrouping="True" 
-                       ShowGroupDropArea="True" ColumnSizer="SizeToCells" BindableView="{Binding View, Mode=OneWayToSource}">
+                       ShowGroupDropArea="True" ColumnSizer="SizeToCells" BindableView="{Binding View, Mode=OneWayToSource}" >
             <sf:SfDataGrid.Columns>
-                <sf:GridTextColumn HeaderText="Index" MappingName="Index" MinimumWidth="50" TextAlignment="Right" />
+                <sf:GridTextColumn HeaderText="Index" MappingName="Index" MinimumWidth="50" TextAlignment="Right" AllowGrouping="False" />
                 <sf:GridTemplateColumn HeaderText="Event" AllowDragging="False" MappingName="TypeAsString" MinimumWidth="130" ColumnSizer="SizeToCells">
                     <sf:GridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -39,14 +39,14 @@
                         </DataTemplate>
                     </sf:GridTemplateColumn.CellTemplate>
                 </sf:GridTemplateColumn>
-                <sf:GridTextColumn HeaderText="Category" MappingName="Category" MinimumWidth="80" />
-                <sf:GridTextColumn HeaderText="Time" ValueBinding="{Binding TimeStamp, StringFormat=\{0:HH:mm:ss.ffff\}, Mode=OneTime}" />
+                <sf:GridTextColumn HeaderText="Category" MappingName="Category" MinimumWidth="80"  />
+                <sf:GridTextColumn HeaderText="Time" ValueBinding="{Binding TimeStamp, StringFormat=\{0:HH:mm:ss.ffff\}, Mode=OneTime}" AllowGrouping="False" />
                 <sf:GridTextColumn HeaderText="PID" ValueBinding="{Binding ProcessId, Mode=OneTime}" MinimumWidth="50" TextAlignment="Center" />
                 <sf:GridTextColumn HeaderText="Process Name" ValueBinding="{Binding ProcessName, Mode=OneTime}" MinimumWidth="80" Width="120" ColumnSizer="SizeToCells" />
-                <sf:GridTextColumn HeaderText="TID" ValueBinding="{Binding ThreadId, Mode=OneTime}" MinimumWidth="50" TextAlignment="Center" MappingName="ThreadId"/>
+                <sf:GridTextColumn HeaderText="TID" ValueBinding="{Binding ThreadId, Mode=OneTime}" MinimumWidth="50" TextAlignment="Center" MappingName="ThreadId" AllowGrouping="True"/>
                 <sf:GridTextColumn HeaderText="CPU" ValueBinding="{Binding Processor, Mode=OneTime}" ColumnSizer="SizeToHeader" AllowResizing="False" TextAlignment="Center"/>
-                <sf:GridTextColumn HeaderText="Opcode" ValueBinding="{Binding Opcode, Mode=OneTime}" MinimumWidth="70" />
-                <sf:GridTemplateColumn HeaderText="Details" MinimumWidth="200" Width="500" MappingName="Details">
+                <sf:GridTextColumn HeaderText="Opcode" ValueBinding="{Binding Opcode, Mode=OneTime}" MinimumWidth="70" AllowGrouping="{Binding IsNotMonitoring}" />
+                <sf:GridTemplateColumn HeaderText="Details" MinimumWidth="200" Width="500" MappingName="Details" AllowGrouping="False">
                     <sf:GridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <c:MultiStyleTextBlock Text="{Binding Details, Mode=OneTime}">

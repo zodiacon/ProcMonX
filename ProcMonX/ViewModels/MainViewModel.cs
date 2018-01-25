@@ -257,7 +257,7 @@ namespace ProcMonX.ViewModels {
             _updateTimer.Start();
         }
 
-        public string Title => $"{App.Title} v0.2 Beta (C)2017-2018 by Pavel Yosifovich";
+        public string Title => $"{App.Title} v0.21 Beta (C)2017-2018 by Pavel Yosifovich";
 
         public ICommand ExitCommand => new DelegateCommand(() => Application.Current.Shutdown());
 

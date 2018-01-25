@@ -15,6 +15,23 @@ namespace ProcMonX {
     public partial class App : Application {
         public const string Title = "Process Monitor X";
 
+        public App() {
+            DispatcherUnhandledException += App_DispatcherUnhandledException;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+        }
+
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e) {
+            ShowFatalError((Exception)e.ExceptionObject);
+        }
+
+        private void ShowFatalError(Exception ex) {
+            MessageBox.Show($"Fatal error: {ex.Message}.\n{ex.StackTrace}", Title);
+        }
+
+        private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e) {
+            ShowFatalError(e.Exception);
+        }
+
         protected override void OnStartup(StartupEventArgs e) {
             base.OnStartup(e);
 
