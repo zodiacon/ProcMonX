@@ -40,9 +40,9 @@ namespace ProcMonX.Tracing {
                 BufferSizeMB = 128,
                 CpuSampleIntervalMSec = 10,
             };
-            var keywords = KernelTraceEventParser.Keywords.None;
-            foreach (var type in types)
-                keywords |= EventInfo.AllEventsByType[type].Keyword;
+            var keywords = KernelTraceEventParser.Keywords.All;
+            //foreach (var type in types)
+            //    keywords |= EventInfo.AllEventsByType[type].Keyword;
 
             //_kernelSession.EnableKernelProvider(keywords | KernelTraceEventParser.Keywords.Job);
 
@@ -248,6 +248,24 @@ namespace ProcMonX.Tracing {
                 case EventType.DriverMajorFunctionCall:
                     _kernelParser.DiskIODriverMajorFunctionCall += obj => HandleEvent(obj, EventType.DriverMajorFunctionCall);
                     break;
+
+                case EventType.ProcessMemoryInfo:
+                    _kernelParser.MemoryProcessMemInfo += obj => HandleEvent(obj, EventType.ProcessMemoryInfo);
+                    break;
+
+                case EventType.MemorySystemMemoryInfo:
+                    _kernelParser.MemorySystemMemInfo += obj => HandleEvent(obj, EventType.MemorySystemMemoryInfo);
+                    break;
+
+                case EventType.VirtualAllocDCStart:
+                    _kernelParser.MemoryVirtualAllocDCStart += obj => HandleEvent(obj, EventType.VirtualAllocDCStart);
+                    break;
+
+                case EventType.VirtualAllocDCStop:
+                    _kernelParser.MemoryVirtualAllocDCStop += obj => HandleEvent(obj, EventType.VirtualAllocDCStop);
+                    break;
+
+
             }
         }
 

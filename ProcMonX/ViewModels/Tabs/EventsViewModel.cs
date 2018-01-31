@@ -5,13 +5,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Zodiacon.WPF;
 
 namespace ProcMonX.ViewModels.Tabs {
     [TabItem(Text = "All Events", Icon = "/icons/tabs/event.ico")]
     sealed class EventsViewModel : TabItemViewModelBase {
-        public EventsViewModel(IList<TraceEventDataViewModel> events) {
+        public object Parent { get; }
+
+        public EventsViewModel(object parent, IList<TraceEventDataViewModel> events) {
+            Parent = parent;
             Events = events;
-        }
+       }
+
+        public bool IsNotMonitoring { get; set; }
 
         internal override bool CanClose => false;
 

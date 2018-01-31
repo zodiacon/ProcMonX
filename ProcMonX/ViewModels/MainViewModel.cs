@@ -60,7 +60,7 @@ namespace ProcMonX.ViewModels {
             _filterSettings = new CaptureFilterViewModel(this);
             AddTab(_filterSettings);
 
-            AddTab(_allEventsViewModel = new EventsViewModel(Events));
+            AddTab(_allEventsViewModel = new EventsViewModel(this, Events));
             _views.Add(_allEventsViewModel.Text, _allEventsViewModel);
             _views.Add(_captureSettings.Text, _captureSettings);
 
@@ -149,6 +149,19 @@ namespace ProcMonX.ViewModels {
 
                 case DriverMajorFunctionCallTraceData data:
                     return $"Major:;; {data.MajorFunction};; Minor:;; {data.MinorFunction};; IRP:;; 0x{data.Irp:X};; Routine:;; 0x{data.RoutineAddr:X};; Unique ID:;; 0x{data.UniqMatchID:X}";
+
+                case MemInfoTraceData data:
+                    return $"Zero Pages:;; {data.ZeroPageCount};; Free Pages:;; {data.FreePageCount};; Modified Pages:;; {data.ModifiedPageCount};; Modified No Write Pages:;; {data.ModifiedNoWritePageCount};; Bad Pages:;; {data.BadPageCount}";
+
+                case MemoryPageAccessTraceData data:
+                    return $"Page Kind:;; {data.PageKind};; Page List:;; {data.PageList};; PFN:;; {data.PageFrameIndex};; Virtual Address:;; 0x{data.VirtualAddress:X};; File Key:;; {data.FileKey:X};; Filename:;; {data.FileName}";
+
+                case MemorySystemMemInfoTraceData data:
+                    return $"Free Pages: {data.FreePages}";
+
+                case MemoryPageFaultTraceData data:
+                    return $"Virtual Address:;; 0x{data.VirtualAddress};; Program Counter:;; 0x{data.ProgramCounter}";
+
             }
             return string.Empty;
         }
@@ -175,7 +188,16 @@ namespace ProcMonX.ViewModels {
 
         public bool IsMonitoring {
             get => _isMonitoring; 
-            set => SetProperty(ref _isMonitoring, value);
+            set {
+                if (SetProperty(ref _isMonitoring, value)) {
+                    RaisePropertyChanged(nameof(IsNotMonitoring));
+                }
+            }
+        }
+
+        public bool IsNotMonitoring {
+            get => !IsMonitoring;
+            set => IsMonitoring = !value;
         }
 
         private TabItemViewModelBase _selectedTab;
@@ -315,6 +337,14 @@ namespace ProcMonX.ViewModels {
             var window = Window.GetWindow(element);
             window.Topmost = Options.AlwaysOnTop;
         });
+
+        public bool AutoScroll {
+            get => SelectedTab != null ? SelectedTab.AutoScroll : false;
+            set {
+                if (SelectedTab != null)
+                    SelectedTab.AutoScroll = value;
+            }
+        }
 
         private void SaveInternal(string filename) {
             using (var writer = new StreamWriter(filename, append: false, encoding: Encoding.Unicode)) {

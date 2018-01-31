@@ -17,7 +17,7 @@ namespace ProcMonX.ViewModels.Tabs {
 
         public ProcessesViewModel(MainViewModel vm, IEnumerable<TraceEventDataViewModel> events) {
             _mainViewModel = vm;
-            _events = events.Where(evt => evt.Category == EventCategory.Processes);
+            _events = events.Where(evt => evt.Category.Category == EventCategory.Processes);
             _mainViewModel.PropertyChanged += _mainViewModel_PropertyChanged;
         }
 
@@ -26,7 +26,7 @@ namespace ProcMonX.ViewModels.Tabs {
                 if (_mainViewModel.IsMonitoring)
                     _events = null;
                 else
-                    _events = _mainViewModel.Events.Where(evt => evt.Category == EventCategory.Processes);
+                    _events = _mainViewModel.Events.Where(evt => evt.Category.Category == EventCategory.Processes);
                 RaisePropertyChanged(nameof(ProcessEvents));
             }
         }

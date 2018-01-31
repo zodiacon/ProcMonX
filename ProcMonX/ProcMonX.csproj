@@ -413,6 +413,31 @@
   <ItemGroup>
     <Resource Include="Icons\Events\AlpcWaitForNewMessage.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Events\FileClose.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Events\FileFlush.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Events\FileMap.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Events\FileUnmap.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Events\FileMapDCStart.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Events\FileMapDCStop.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Events\VirtualAllocDCStart.ico" />
+    <Resource Include="Icons\Events\VirtualAllocDCStop.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Normal\autoscroll.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

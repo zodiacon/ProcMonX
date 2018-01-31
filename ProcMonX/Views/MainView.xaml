@@ -44,7 +44,7 @@
                 <Separator />
                 <MenuItem Header="Clear All" Icon="{z:Image /icons/normal/clear.ico, Width=20, Height=20}" Command="{Binding ClearAllCommand}" />
                 <Separator />
-                <MenuItem Header="_Filter..." />
+                <MenuItem Header="_Auto Scroll" IsChecked="{Binding AutoScroll}" IsCheckable="True"  />
             </MenuItem>
             <MenuItem Header="_Monitor">
                 <MenuItem Header="_Go" Icon="{z:Image /icons/normal/play.ico, Width=20, Height=20}" Command="{Binding GoCommand}" />
@@ -82,6 +82,12 @@
             <Button Content="{z:Image /icons/normal/Network.ico, Width=24, Height=24}" ToolTip="Network" Command="{Binding ViewTabCommand}" CommandParameter="Network" />
             <Button Content="{z:Image /icons/normal/Alpc.ico, Width=24, Height=24}" ToolTip="ALPC" Command="{Binding ViewTabCommand}" CommandParameter="Alpc" />
             <Separator />
+            <ToggleButton IsChecked="{Binding AutoScroll}" Style="{StaticResource MetroToggleButton}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/icons/normal/autoscroll.ico" Width="24" Height="24" />
+                    <TextBlock Text="Auto Scroll" VerticalAlignment="Center" Margin="4,0,0,0" FontSize="12" />
+                </StackPanel>
+            </ToggleButton>
             <Button Command="{Binding ClearAllCommand}">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/icons/normal/clear.ico" Width="24" Height="24" />

@@ -17,7 +17,7 @@ namespace ProcMonX.ViewModels {
 
         public string Name => Info.AsString;
         public string Icon => $"/icons/events/{Info.EventType.ToString()}.ico";
-        public EventCategory Category => Info.Category;
+        public string Category => Info.Category.Name;
         public string Description => Info.Description;
 
         public bool IsMonitoring {

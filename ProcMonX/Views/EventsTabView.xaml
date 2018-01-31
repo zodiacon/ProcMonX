@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="ProcMonX.Views.EventsTabView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:local="clr-namespace:ProcMonX.Views"
+             xmlns:conv="clr-namespace:ProcMonX.Converters"
+             xmlns:z="http://zodiacon.wpf/2016"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.Resources>
+            <z:BindingProxy x:Key="Proxy" Data="{Binding}" />
+            <z:BooleanToVisibilityConverter x:Key="bool2vis" />
+        </Grid.Resources>
+        <StackPanel Margin="2" Orientation="Horizontal">
+            <TextBlock Text="Quick Search:" VerticalAlignment="Center" />
+            <TextBox Margin="4,0,0,0" Width="300" Text="{Binding SearchText, Mode=TwoWay, Delay=300, UpdateSourceTrigger=PropertyChanged}" 
+                     metro:TextBoxHelper.Watermark="Type text to search"
+                     metro:TextBoxHelper.ClearTextButton="True" />
+        </StackPanel>
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Items, Mode=OneTime}" IsReadOnly="True" AutoGenerateColumns="False" metro:ButtonHelper.PreserveTextCase="True" 
+                  ScrollViewer.IsDeferredScrollingEnabled="True" VirtualizingPanel.IsContainerVirtualizable="True" VirtualizingPanel.VirtualizationMode="Standard"
+                  >
+            <i:Interaction.Behaviors>
+            </i:Interaction.Behaviors>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Index" Binding="{Binding Index, Mode=OneTime}" MinWidth="50" CanUserResize="False" ElementStyle="{StaticResource TextBlockRightAlignStyle}" />
+                <DataGridTemplateColumn Header="Event" CanUserReorder="False" CanUserResize="False" SortMemberPath="Type">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{Binding Icon, Mode=OneTime}" Width="16" Height="16" />
+                                <TextBlock Text="{Binding TypeAsString}" Margin="2,0,0,0" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Time" Binding="{Binding Data.TimeStamp, StringFormat=\{0:HH:mm:ss.ffff\}, Mode=OneTime}" />
+                <DataGridTextColumn Header="PID" Binding="{Binding Data.ProcessID, Mode=OneTime}" />
+                <DataGridTextColumn Header="TID" Binding="{Binding ThreadId, Mode=OneTime}" />
+                <DataGridTextColumn Header="Process Name" Binding="{Binding Data.ProcessName, Mode=OneTime, IsAsync=true}" FontWeight="Bold" />
+                <DataGridTextColumn Header="Opcode" Binding="{Binding Data.OpcodeName, Mode=OneTime, IsAsync=true}" />
+                <DataGridTextColumn Header="Parent PID" Visibility="{Binding Data.IsProcessesOnly, Source={StaticResource Proxy}, Converter={StaticResource bool2vis}}" Binding="{Binding Data.ParentID, Mode=OneTime}" />
+                <DataGridTextColumn Header="Session" Visibility="{Binding Data.IsProcessesOnly, Source={StaticResource Proxy}, Converter={StaticResource bool2vis}}" Binding="{Binding Data.SessionID, Mode=OneTime}" />
+                <DataGridTextColumn Header="File Name" Visibility="{Binding Data.IsModulesOnly, Source={StaticResource Proxy}, Converter={StaticResource bool2vis}}" Binding="{Binding Data.FileName, Mode=OneTime}" />
+                <DataGridTextColumn Header="Command Line" Visibility="{Binding Data.IsProcessesOnly, Source={StaticResource Proxy}, Converter={StaticResource bool2vis}}" Binding="{Binding Data.CommandLine, Mode=OneTime}" />
+                <DataGridTextColumn Header="Message ID" Visibility="{Binding Data.IsAlpcOnly, Source={StaticResource Proxy}, Converter={StaticResource bool2vis}}" Binding="{Binding Data.MessageID, Mode=OneTime}" />
+
+                <DataGridTextColumn Header="More Info" Binding="{Binding MoreInfo, Mode=OneTime, IsAsync=True}" Visibility="{Binding Data.IsGeneric, Source={StaticResource Proxy}, Converter={StaticResource bool2vis}}"  />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

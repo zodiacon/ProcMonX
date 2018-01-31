@@ -29,7 +29,14 @@ namespace ProcMonX.ViewModels {
 
         internal virtual bool CanClose => true;
 
+        public bool AutoScroll {
+            get => _autoScroll;
+            set => SetProperty(ref _autoScroll, value);
+        }
+
         public virtual void OnActivate(bool activate) { }
         public virtual void OnClose() { }
+
+        bool _autoScroll;
     }
 }

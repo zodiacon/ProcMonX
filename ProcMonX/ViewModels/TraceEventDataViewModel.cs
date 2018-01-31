@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace ProcMonX.ViewModels {
-    public class TraceEventDataViewModel {
+    class TraceEventDataViewModel {
         static int _globalIndex;
         public int Index { get; }
         public DateTime TimeStamp => Data.TimeStamp;
@@ -17,7 +17,7 @@ namespace ProcMonX.ViewModels {
         public TraceEvent Data { get; }
         public EventType Type { get; }
         public string TypeAsString { get; }
-        public EventCategory Category { get; }
+        public CategoryInfo Category { get; }
         public string Opcode => Data.OpcodeName;
 
         public int ProcessId => Data.ProcessID;

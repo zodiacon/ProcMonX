@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ProcMonX.ViewModels.EventCategories {
-    public sealed class ProcessTraceEventViewModel : TraceEventDataViewModel{
+    sealed class ProcessTraceEventViewModel : TraceEventDataViewModel{
         public readonly ProcessTraceData ProcessData;
 
         internal ProcessTraceEventViewModel(TraceEventDataViewModel root) : base(root.Data, root.Type) {
