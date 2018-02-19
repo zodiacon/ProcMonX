@@ -88,10 +88,11 @@
                     <TextBlock Text="Auto Scroll" VerticalAlignment="Center" Margin="4,0,0,0" FontSize="12" />
                 </StackPanel>
             </ToggleButton>
+            <Separator />
             <Button Command="{Binding ClearAllCommand}">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/icons/normal/clear.ico" Width="24" Height="24" />
-                    <TextBlock Text="Clear All" VerticalAlignment="Center" Margin="4,0,0,0" />
+                    <TextBlock Text="Clear All" VerticalAlignment="Center" Margin="4,0,0,0" FontSize="12" />
                 </StackPanel>
             </Button>
         </ToolBar>

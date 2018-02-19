@@ -22,6 +22,7 @@ namespace ProcMonX {
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e) {
             ShowFatalError((Exception)e.ExceptionObject);
+            Shutdown(1);
         }
 
         private void ShowFatalError(Exception ex) {

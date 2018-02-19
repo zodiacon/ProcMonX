@@ -26,9 +26,9 @@
             metro:TextBoxHelper.ClearTextButton="True" metro:TextBoxHelper.SelectAllOnFocus="True" z:FocusProperties.FocusOnLoad="True"/>
 
         <sf:SfDataGrid Grid.Row="1" ItemsSource="{Binding Events}" Style="{StaticResource SfDataGridStyle}" SelectionMode="Extended" IsReadOnly="True" x:Name="_dataGrid"
-                       ShowGroupDropArea="True" ColumnSizer="SizeToCells" BindableView="{Binding View, Mode=OneWayToSource}" FrozenColumnCount="2">
+                       ShowGroupDropArea="True" ColumnSizer="SizeToCells" BindableView="{Binding View, Mode=OneWayToSource}" FrozenColumnCount="2" EnableDataVirtualization="True">
             <sf:SfDataGrid.AutoScroller>
-                <sf:AutoScroller AutoScrolling="Vertical" IsEnabled="True" IntervalTime="0:0:2" />
+                <sf:AutoScroller AutoScrolling="Vertical" IsEnabled="True" IntervalTime="0:0:1.5" />
             </sf:SfDataGrid.AutoScroller>
             <sf:SfDataGrid.Columns>
                 <sf:GridTextColumn HeaderText="Index" MappingName="Index" MinimumWidth="50" TextAlignment="Right" AllowGrouping="False" />
@@ -48,6 +48,7 @@
                 <sf:GridTextColumn HeaderText="Process Name" ValueBinding="{Binding ProcessName, Mode=OneTime}" MinimumWidth="80" Width="120" ColumnSizer="SizeToCells" AllowFiltering="{Binding Parent.IsNotMonitoring}" />
                 <sf:GridTextColumn HeaderText="TID" ValueBinding="{Binding ThreadId, Mode=OneTime}" MinimumWidth="50" TextAlignment="Center" MappingName="ThreadId" AllowGrouping="{Binding Parent.IsNotMonitoring}"/>
                 <sf:GridTextColumn HeaderText="CPU" ValueBinding="{Binding Processor, Mode=OneTime}" ColumnSizer="SizeToHeader" AllowResizing="False" TextAlignment="Center"/>
+                <sf:GridTextColumn HeaderText="Level" ValueBinding="{Binding Level, Mode=OneTime}" MinimumWidth="70" Width="90" AllowGrouping="{Binding Parent.IsNotMonitoring}" />
                 <sf:GridTextColumn HeaderText="Opcode" ValueBinding="{Binding Opcode, Mode=OneTime}" MinimumWidth="70" AllowGrouping="{Binding Parent.IsNotMonitoring}" />
                 <sf:GridTemplateColumn HeaderText="Details" MinimumWidth="200" Width="500" MappingName="Details" AllowGrouping="False">
                     <sf:GridTemplateColumn.CellTemplate>

@@ -14,6 +14,7 @@ namespace ProcMonX.Tracing {
     sealed class TraceManager : IDisposable {
         TraceEventSession _kernelSession;
         KernelTraceEventParser _kernelParser;
+        TraceEventSession _customSession;
         //ClrTraceEventParser _clrParser;
 
         Thread _processingThread;
@@ -36,7 +37,7 @@ namespace ProcMonX.Tracing {
             if (EventTrace == null)
                 throw new InvalidOperationException("Must register for event notifications");
 
-            _kernelSession = new TraceEventSession(KernelTraceEventParser.KernelSessionName) {
+            _kernelSession = new TraceEventSession(KernelTraceEventParser.KernelSessionName, TraceEventSessionOptions.NoRestartOnCreate) {
                 BufferSizeMB = 128,
                 CpuSampleIntervalMSec = 10,
             };
@@ -45,6 +46,13 @@ namespace ProcMonX.Tracing {
             //    keywords |= EventInfo.AllEventsByType[type].Keyword;
 
             //_kernelSession.EnableKernelProvider(keywords | KernelTraceEventParser.Keywords.Job);
+
+            //_customSession = new TraceEventSession("CustomSession");
+            //_customSession.EnableProvider("Microsoft-Windows-WMI-Activity");
+            //var parser = new RegisteredTraceEventParser(_customSession.Source);
+            //parser.All += Parser_All;
+
+            //Task.Run(() => _customSession.Source.Process());
 
             _processingThread = new Thread(() => {
                 _kernelSession.EnableKernelProvider(keywords);
@@ -58,11 +66,16 @@ namespace ProcMonX.Tracing {
 
         }
 
+        private void Parser_All(TraceEvent obj) {
+            HandleEvent(obj, EventType.Custom);
+        }
+
         public TraceEventFilter Filter { get; set; }
 
         public void Stop() {
             _kernelSession.Flush();
             _kernelSession.Stop();
+            _customSession?.Stop();
         }
 
         void HandleEvent(TraceEvent evt, EventType type) {

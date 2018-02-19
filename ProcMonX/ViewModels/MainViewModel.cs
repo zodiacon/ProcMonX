@@ -97,10 +97,10 @@ namespace ProcMonX.ViewModels {
                     return $"Name:;; {data.FileName};; Address:;; 0x{data.ImageBase:X};; Base:;; 0x{data.DefaultBase:X};; size:;; 0x{data.ImageSize:X}";
 
                 case ALPCSendMessageTraceData data:
-                    return $"Message ID: {data.MessageID}";
+                    return $"Message ID: ;;{data.MessageID}";
 
                 case ALPCReceiveMessageTraceData alpc:
-                    return $"Message ID: {alpc.MessageID}";
+                    return $"Message ID: ;;{alpc.MessageID}";
 
                 case ALPCWaitForReplyTraceData data:
                     return $"Message ID:;; {data.MessageID}";
@@ -163,7 +163,10 @@ namespace ProcMonX.ViewModels {
                     return $"Virtual Address:;; 0x{data.VirtualAddress};; Program Counter:;; 0x{data.ProgramCounter}";
 
             }
-            return string.Empty;
+            var sb = new StringBuilder(128);
+            foreach (var name in evt.PayloadNames)
+                sb.Append(name).Append(":;; ").Append(evt.PayloadStringByName(name)).Append(";; ");
+            return sb.ToString();
         }
 
         bool _suspendUpdates;

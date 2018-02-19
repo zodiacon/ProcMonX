@@ -20,7 +20,8 @@ namespace ProcMonX.Models {
             FileMapDCStart, FileMapDCStop, FileMap, FileUnmap,
         DiskRead = 800, DiskWrite, DriverMajorFunctionCall, DriverMajorFunctionReturn, DriverCompletionRoutine,
         TcpIpReceive = 900, TcpIpSend, TcpIpConnect, TcpIpDisconnect, TcpIpAccept,
-        MemoryMemInfo= 950, MemoryInMemory, MemorySystemMemoryInfo, MemoryInMemoryActive, ProcessMemoryInfo,
+        MemoryMemInfo = 950, MemoryInMemory, MemorySystemMemoryInfo, MemoryInMemoryActive, ProcessMemoryInfo,
+        Custom = 0x10000000
     }
 
     enum EventCategory {
@@ -36,6 +37,7 @@ namespace ProcMonX.Models {
         Memory,
         MemoryManager,
         Disk,
+        Other = 999
     }
 
     class CategoryInfo {
@@ -59,6 +61,7 @@ namespace ProcMonX.Models {
             new CategoryInfo(EventCategory.MemoryManager, "Memory Manager"),
             new CategoryInfo(EventCategory.Driver),
             new CategoryInfo(EventCategory.Disk),
+            new CategoryInfo(EventCategory.Other)
         };
 
         public static readonly IReadOnlyDictionary<EventCategory, CategoryInfo> CategoriesByType = AllCategories.ToDictionary(cat => cat.Category);
@@ -77,7 +80,6 @@ namespace ProcMonX.Models {
         public string AsString { get; private set; }
         public KernelTraceEventParser.Keywords Keyword { get; private set; }
         public string Description { get; private set; }
-
         public CategoryInfo Category { get; private set; }
 
         public static readonly IReadOnlyList<EventInfo> AllEvents =
@@ -353,6 +355,11 @@ namespace ProcMonX.Models {
                     Keyword = KernelTraceEventParser.Keywords.VAMap,
                     Category = CategoryInfo.GetCategory(EventCategory.Files)
                 },
+                //new EventInfo {
+                //    EventType = EventType.Custom,
+                //    AsString = "Custom",
+                //    Category = CategoryInfo.GetCategory(EventCategory.Other)
+                //},
                 //new EventInfo {
                 //    EventType = EventType.DriverMajorFunctionCall,
                 //    AsString = "Driver Major Function Call",
