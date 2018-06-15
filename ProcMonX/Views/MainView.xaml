@@ -97,7 +97,7 @@
             </Button>
         </ToolBar>
 
-        <sf:TabControlExt Grid.Row="2" ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab, Mode=TwoWay}" CloseButtonType="Individual" TabVisualStyle="None"
+        <sf:TabControlExt Grid.Row="2" ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab, Mode=TwoWay}" CloseButtonType="Individual" TabVisualStyle="None" 
                           EnableLabelEdit="False" IsDisableUnloadTabItemExtContent="True" TabItemLayout="MultiLine" TabScrollStyle="Extended" sf:SkinStorage.OverrideVisualStyle="True" sf:SkinStorage.VisualStyle="Metro"
                           sf:SkinStorage.MetroBrush="{DynamicResource AccentColorBrush}" TabItemSelectedBackground="{DynamicResource AccentColorBrush}" TabPanelBackground="{DynamicResource WhiteBrush}"
                           TabItemSelectedForeground="{DynamicResource WhiteBrush}" TabItemHoverBackground="{DynamicResource AccentColorBrush3}" TabItemHoverForeground="{DynamicResource WhiteBrush}"

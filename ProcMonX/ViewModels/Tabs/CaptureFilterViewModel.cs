@@ -47,6 +47,7 @@ namespace ProcMonX.ViewModels.Tabs {
             if (vm.ShowDialog() == true) {
                 _filters.Add(new FilterRuleViewModel(type, vm.Filter));
                 _filter.FilterRules.Add(vm.Filter);
+                RaisePropertyChanged(nameof(SelectedItems));
             }
         });
 
@@ -54,7 +55,10 @@ namespace ProcMonX.ViewModels.Tabs {
         public ObservableCollection<object> SelectedItems {
             get => _selectedItems;
             set {
-                _selectedItems = value;
+                if (_selectedItems == null)
+                    _selectedItems.Clear();
+                else
+                    _selectedItems = value;
                 RaisePropertyChanged(nameof(SelectedItems));
             }
         }
@@ -62,13 +66,13 @@ namespace ProcMonX.ViewModels.Tabs {
         FilterRuleViewModel _selectedItem;
 
         public ICommand DeleteCommand => new DelegateCommand(() => {
-            var items = SelectedItems.Cast<FilterRuleViewModel>().ToArray();
+            var items = SelectedItems.OfType<FilterRuleViewModel>().ToArray();
             foreach (var filter in items) {
                 _filter.FilterRules.Remove(filter.Rule);
                 _filters.Remove(filter);
             }
             RaisePropertyChanged(nameof(SelectedItems));
-        }, () => SelectedItems.Count > 0).ObservesProperty(() => SelectedItems);
+        }, () => SelectedItems.OfType<FilterRuleViewModel>().Any()).ObservesProperty(() => SelectedItems);
 
         public ICommand EditCommand => new DelegateCommand(() => {
             var filterItem = SelectedItem;
