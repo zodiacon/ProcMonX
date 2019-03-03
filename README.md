@@ -8,4 +8,4 @@ An alternative way is to use Event Tracing for Windows (ETW) to get this informa
 
 See more info at [this blog post](http://blogs.microsoft.co.il/pavely/2018/01/17/procmon-vs-procmonx/).
 
-![ProcMonX](/procmon1.png)
+
