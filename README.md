@@ -7,3 +7,5 @@ The classic Sysinternals tool [Process Monitor](https://docs.microsoft.com/en-us
 An alternative way is to use Event Tracing for Windows (ETW) to get this information, without the need for a kernel driver. (Process Monitor does use ETW for network events).
 
 See more info at [this blog post](http://blogs.microsoft.co.il/pavely/2018/01/17/procmon-vs-procmonx/).
+
+![ProcMonX](/procmon1.png)
