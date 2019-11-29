@@ -121,20 +121,20 @@ namespace ProcMonX.ViewModels {
                     return $"Address:;; 0x{data.BaseAddr:X};; Size:;; 0x{data.Length:X};; Flags:;; {(VirtualAllocFlags)(data.Flags)}";
 
                 case TcpIpConnectTraceData data:
-                    return $"Src Address:;; {data.saddr.ToString()};; Dst Address:;; {data.daddr.ToString()};; Dst Port:;; {data.dport};; Src Port:;; {data.sport};; Connection ID:;; {data.connid}";
+                    return $"Src Address:;; {data.saddr.ToString()};; Dst Address:;; {data.daddr};; Dst Port:;; {data.dport};; Src Port:;; {data.sport};; Connection ID:;; {data.connid}";
 
                 case TcpIpTraceData data:
-                    return $"Src Address:;; {data.saddr.ToString()};; Dst Address:;; {data.daddr.ToString()};; Dst Port:;; {data.dport};; Src Port:;; {data.sport};; Size:;; {data.size};; Connection ID:;; {data.connid}";
+                    return $"Src Address:;; {data.saddr.ToString()};; Dst Address:;; {data.daddr};; Dst Port:;; {data.dport};; Src Port:;; {data.sport};; Size:;; {data.size};; Connection ID:;; {data.connid}";
 
                 case TcpIpV6TraceData data:
-                    return $"Src Address:;; {data.saddr.ToString()};; Dst Address:;; {data.daddr.ToString()};; Dst Port:;; {data.dport};; Src Port:;; {data.sport};; Size:;; {data.size};; Connection ID:;; {data.connid}";
+                    return $"Src Address:;; {data.saddr.ToString()};; Dst Address:;; {data.daddr};; Dst Port:;; {data.dport};; Src Port:;; {data.sport};; Size:;; {data.size};; Connection ID:;; {data.connid}";
 
                 case TcpIpSendTraceData data:
-                    return $"Src Address:;; {data.saddr.ToString()};; Dst Address:;; {data.daddr.ToString()};; Dst Port:;; {data.dport};; Src Port:;; {data.sport};;" + 
+                    return $"Src Address:;; {data.saddr.ToString()};; Dst Address:;; {data.daddr};; Dst Port:;; {data.dport};; Src Port:;; {data.sport};;" + 
                         $" Size:;; {data.size};; Seq:;; {data.seqnum};; Start:;; {data.startime};; End:;; {data.endtime};; Connection ID:;; {data.connid}";
 
                 case TcpIpV6SendTraceData data:
-                    return $"Src Address:;; {data.saddr.ToString()};; Dst Address:;; {data.daddr.ToString()};; Dst Port:;; {data.dport};; Src Port:;; {data.sport};;" +
+                    return $"Src Address:;; {data.saddr.ToString()};; Dst Address:;; {data.daddr};; Dst Port:;; {data.dport};; Src Port:;; {data.sport};;" +
                         $" Size:;; {data.size};; Seq:;; {data.seqnum};; Start:;; {data.startime};; End:;; {data.endtime};; Connection ID:;; {data.connid}";
 
                 case DiskIOTraceData data:
